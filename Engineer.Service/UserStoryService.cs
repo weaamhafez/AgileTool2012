@@ -20,7 +20,7 @@ namespace Engineer.Service
             {
                 try
                 {
-                    story.state = "Finished";
+                    story.state = AppConstants.USERSTORY_STATUS_FINISIHED;
                     uRepository.UpdateState(story);
 
                     #region Save to history

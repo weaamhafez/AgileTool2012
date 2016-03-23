@@ -1,4 +1,5 @@
-﻿using Engineer.EMF.Utils.Exceptions;
+﻿using Engineer.EMF.App_Code.Utils;
+using Engineer.EMF.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,11 @@ namespace Engineer.EMF
                     if(story.AspNetUsers != null)
                     {
                         var user = story.AspNetUsers.ToList().SingleOrDefault(s => s.Id == userId);
-                        if (user != null)
+                        if (user != null && !stories.Contains(story,new UserStoryComparer()))
                             stories.Add(story);
                     }
-                    
+                    if (story.AspNetUser != null && story.AspNetUser.Id == userId && !stories.Contains(story, new UserStoryComparer()))
+                        stories.Add(story);
                 }
                 
               );
@@ -60,6 +62,7 @@ namespace Engineer.EMF
             exist.updateDate = DateTime.Now;
             exist.Project = story.Project;
             exist.state = story.state;
+            exist.AspNetUsers = story.AspNetUsers;
             db.SaveChanges();
         }
 
