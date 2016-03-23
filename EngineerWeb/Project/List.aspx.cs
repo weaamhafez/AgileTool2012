@@ -10,12 +10,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using Engineer.EMF.Utils.Exceptions;
+using System.Web.Security;
+using System.Security.Permissions;
 
 namespace EngineerWeb.Project
 {
+    
     public partial class List : System.Web.UI.Page
     {
         static ProjectRepository dRepository = new ProjectRepository();
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true, Role = "Admin")]
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

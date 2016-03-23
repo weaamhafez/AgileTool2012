@@ -53,12 +53,35 @@
         </asp:ScriptManager>
         <div id="wrapper" >
             <asp:LoginView runat="server" ViewStateMode="Disabled">
+                <RoleGroups>
+                    <asp:RoleGroup Roles="Admin">
+                        <ContentTemplate>
+                            <div id="sidebar-wrapper">
+                                <ul class="sidebar-nav" id="menu">
+                                    <li class="active"><a href="<%=ResolveUrl("/") %>"><i
+						                    class="glyphicon glyphicon-dashboard"></i> Home</a></li>
+                                    <li><a href='<%=ResolveUrl("Project/List") %>' ><i class="glyphicon glyphicon-wrench"></i> Projects</a></li>
+                                    <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
+                                    <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>
+                                    <li><a href='<%=ResolveUrl("Sprint/List") %>' ><i class="glyphicon glyphicon-share-alt"></i> Sprints</a></li>
+                                    <li><a href='<%=ResolveUrl("Reports/ListStories") %>' ><i class="glyphicon glyphicon-pencil"></i> Reports</a></li>
+                                    <li>
+					                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#dataCatureMenuItem" class="collapsed" aria-expanded="false"><i class="glyphicon glyphicon-search"></i> Search <i class="glyphicon glyphicon-collapse-down"></i></a>
+					                    <ul id="dataCatureMenuItem" class="collapse" aria-expanded="false">
+						                <li id="dataCatureFormListMenuItem"><a href='<%=ResolveUrl("Search/Diagram/Form") %>'><i
+								                class="glyphicon glyphicon-edit"></i> Diagram</a></li>
+						                <li id="dataCatureFormCreateMenuItem"><a href='<%=ResolveUrl("Search/User/Form") %>'><i class="glyphicon glyphicon-user"></i> User</a></li>
+                                    </li>
+					            </ul>
+                            </div>
+                        </ContentTemplate>
+                    </asp:RoleGroup>
+                </RoleGroups>
                 <LoggedInTemplate>
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav" id="menu">
                         <li class="active"><a href="<%=ResolveUrl("/") %>"><i
 						        class="glyphicon glyphicon-dashboard"></i> Home</a></li>
-                        <li><a href='<%=ResolveUrl("Project/List") %>' ><i class="glyphicon glyphicon-wrench"></i> Projects</a></li>
                         <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
                         <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>
                         <li><a href='<%=ResolveUrl("Sprint/List") %>' ><i class="glyphicon glyphicon-share-alt"></i> Sprints</a></li>
@@ -71,8 +94,6 @@
 						    <li id="dataCatureFormCreateMenuItem"><a href='<%=ResolveUrl("Search/User/Form") %>'><i class="glyphicon glyphicon-user"></i> User</a></li>
                         </li>
 					</ul>
-				</li>
-                    </ul>
                 </div>
                  </LoggedInTemplate>
             </asp:LoginView>

@@ -90,6 +90,11 @@ function save(type) {
         errorAlert("Please select at least 1 user story");
         return;
     }
+    if ($("#diagramName").val() == "")
+    {
+        errorAlert("Please give a name to diagram");
+        return;
+    }
 
     // Save currently open properties menu
     //saveCurrentSelItemProp();

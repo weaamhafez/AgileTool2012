@@ -2,30 +2,38 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
-        <div class="col-lg-4 col-md-6">
-            <a href='<%=ResolveUrl("Project/List") %>'>
-               <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                              <i class="glyphicon glyphicon-wrench glyphicon-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                              <div class="huge">Projects</div>
-                              <div>Add new projects</div>
-                            </div>
-                        </div>
-                     </div>
-                   <div class="panel-footer"> 
-                        <a href="#">
-                           <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal1">View Details</button></span></div>
-                        </a>
-                       <div class="clearfix"></div>
-                   </div>
-               </div>
-            </a>
+    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                <RoleGroups>
+                    <asp:RoleGroup Roles="Admin">
+                        <ContentTemplate>
+                             <div class="col-lg-4 col-md-6">
+                                <a href='<%=ResolveUrl("Project/List") %>'>
+                                   <div class="panel panel-yellow">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                  <i class="glyphicon glyphicon-wrench glyphicon-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                  <div class="huge">Projects</div>
+                                                  <div>Add new projects</div>
+                                                </div>
+                                            </div>
+                                         </div>
+                                       <div class="panel-footer"> 
+                                            <a href="#">
+                                               <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal1">View Details</button></span></div>
+                                            </a>
+                                           <div class="clearfix"></div>
+                                       </div>
+                                   </div>
+                                </a>
             
-        </div>
+                            </div>
+                        </ContentTemplate>
+                     </asp:RoleGroup>
+                </RoleGroups>
+        </asp:LoginView>
         <div class="col-lg-4 col-md-6">
             <a href='<%=ResolveUrl("User_Story/List") %>'>
                <div class="panel panel-yellow">
