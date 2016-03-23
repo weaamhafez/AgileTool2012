@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<email-list>
+  <email name="EditDiagram">
+    <subject>
+      <![CDATA[Diagram# {0}, Modification on diagram]]>
+    </subject>
+    <body>
+      <![CDATA[      
+      Dear {1}, 
+      <P> Name:        {2} <br>
+          Diagram#:    {0} <br>
+      </P>
+
+      <P>We acknowledge the update of above diagram number on Engineer System</P>
+       <P>
+        NOTE: This is a system generated email. Please do not respond to this email address.
+      </P>]]>
+    </body>
+  </email>
+</email-list>

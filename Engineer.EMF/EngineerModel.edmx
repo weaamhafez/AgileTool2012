@@ -1,0 +1,1068 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Engineer.EMF.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssignUSUser">
+          <Key>
+            <PropertyRef Name="userStoryId" />
+            <PropertyRef Name="userId" />
+          </Key>
+          <Property Name="userStoryId" Type="int" Nullable="false" />
+          <Property Name="userId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="attach" Type="binary" MaxLength="2000" />
+          <Property Name="readonly" Type="bit" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="activties" Type="nvarchar(max)" />
+          <Property Name="create_date" Type="datetime" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="update_date" Type="datetime" />
+          <Property Name="update_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="SVG" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AttachmentHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="Graph" Type="varchar(max)" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="AttachId" Type="int" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" />
+          <Property Name="description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="update_by" Type="nvarchar" MaxLength="128" />
+          <Property Name="updated_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Sprint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="number" Type="int" />
+          <Property Name="topic" Type="nchar" MaxLength="100" />
+          <Property Name="sDate" Type="datetime" />
+          <Property Name="eDate" Type="datetime" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="OriginalSprintNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="SprintHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sprintId" Type="int" />
+          <Property Name="closeDate" Type="datetime" />
+          <Property Name="closedBy" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="UserStories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="50" />
+          <Property Name="description" Type="nchar" MaxLength="400" />
+          <Property Name="updateDate" Type="datetime" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="creator" Type="nvarchar" MaxLength="128" />
+          <Property Name="projectId" Type="int" />
+        </EntityType>
+        <EntityType Name="UserStoryAttachment">
+          <Key>
+            <PropertyRef Name="userStoryId" />
+            <PropertyRef Name="attachId" />
+          </Key>
+          <Property Name="userStoryId" Type="int" Nullable="false" />
+          <Property Name="attachId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserStoryHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userStoryId" Type="int" />
+          <Property Name="closeDate" Type="datetime" />
+          <Property Name="closedBy" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="UserStorySprint">
+          <Key>
+            <PropertyRef Name="userStoryId" />
+            <PropertyRef Name="sprintId" />
+          </Key>
+          <Property Name="userStoryId" Type="int" Nullable="false" />
+          <Property Name="sprintId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AssignUSUser_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AssignUSUser" Type="Self.AssignUSUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssignUSUser">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AssignUSUser_UserStory">
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="1" />
+          <End Role="AssignUSUser" Type="Self.AssignUSUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AssignUSUser">
+              <PropertyRef Name="userStoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attachment_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttachmentHistory_Attachment">
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="0..1" />
+          <End Role="AttachmentHistory" Type="Self.AttachmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attachment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttachmentHistory">
+              <PropertyRef Name="AttachId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttachmentHistory_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AttachmentHistory" Type="Self.AttachmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttachmentHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SprintHistory_Sprint">
+          <End Role="Sprint" Type="Self.Sprint" Multiplicity="0..1" />
+          <End Role="SprintHistory" Type="Self.SprintHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sprint">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SprintHistory">
+              <PropertyRef Name="sprintId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SprintHistory_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="SprintHistory" Type="Self.SprintHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SprintHistory">
+              <PropertyRef Name="closedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStories_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStories">
+              <PropertyRef Name="creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStories_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStories">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryAttachment_Attachment">
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="1" />
+          <End Role="UserStoryAttachment" Type="Self.UserStoryAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attachment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryAttachment">
+              <PropertyRef Name="attachId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryAttachment_UserStories">
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="1" />
+          <End Role="UserStoryAttachment" Type="Self.UserStoryAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryAttachment">
+              <PropertyRef Name="userStoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryHistory_User">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="UserStoryHistory" Type="Self.UserStoryHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryHistory">
+              <PropertyRef Name="closedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryHistory_UserStory">
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="0..1" />
+          <End Role="UserStoryHistory" Type="Self.UserStoryHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryHistory">
+              <PropertyRef Name="userStoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStorySprint_Sprint">
+          <End Role="Sprint" Type="Self.Sprint" Multiplicity="1" />
+          <End Role="UserStorySprint" Type="Self.UserStorySprint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sprint">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStorySprint">
+              <PropertyRef Name="sprintId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStorySprint_UserStories">
+          <End Role="UserStories" Type="Self.UserStories" Multiplicity="1" />
+          <End Role="UserStorySprint" Type="Self.UserStorySprint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStorySprint">
+              <PropertyRef Name="userStoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EngineerEMFModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssignUSUser" EntityType="Self.AssignUSUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attachment" EntityType="Self.Attachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AttachmentHistory" EntityType="Self.AttachmentHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sprint" EntityType="Self.Sprint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SprintHistory" EntityType="Self.SprintHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStories" EntityType="Self.UserStories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStoryAttachment" EntityType="Self.UserStoryAttachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStoryHistory" EntityType="Self.UserStoryHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStorySprint" EntityType="Self.UserStorySprint" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AssignUSUser_Users" Association="Self.FK_AssignUSUser_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AssignUSUser" EntitySet="AssignUSUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AssignUSUser_UserStory" Association="Self.FK_AssignUSUser_UserStory">
+            <End Role="UserStories" EntitySet="UserStories" />
+            <End Role="AssignUSUser" EntitySet="AssignUSUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attachment_Users" Association="Self.FK_Attachment_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Attachment" EntitySet="Attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttachmentHistory_Attachment" Association="Self.FK_AttachmentHistory_Attachment">
+            <End Role="Attachment" EntitySet="Attachment" />
+            <End Role="AttachmentHistory" EntitySet="AttachmentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttachmentHistory_Users" Association="Self.FK_AttachmentHistory_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AttachmentHistory" EntitySet="AttachmentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SprintHistory_Sprint" Association="Self.FK_SprintHistory_Sprint">
+            <End Role="Sprint" EntitySet="Sprint" />
+            <End Role="SprintHistory" EntitySet="SprintHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SprintHistory_Users" Association="Self.FK_SprintHistory_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SprintHistory" EntitySet="SprintHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStories_AspNetUsers" Association="Self.FK_UserStories_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStories_Project" Association="Self.FK_UserStories_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryAttachment_Attachment" Association="Self.FK_UserStoryAttachment_Attachment">
+            <End Role="Attachment" EntitySet="Attachment" />
+            <End Role="UserStoryAttachment" EntitySet="UserStoryAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryAttachment_UserStories" Association="Self.FK_UserStoryAttachment_UserStories">
+            <End Role="UserStories" EntitySet="UserStories" />
+            <End Role="UserStoryAttachment" EntitySet="UserStoryAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryHistory_User" Association="Self.FK_UserStoryHistory_User">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserStoryHistory" EntitySet="UserStoryHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryHistory_UserStory" Association="Self.FK_UserStoryHistory_UserStory">
+            <End Role="UserStories" EntitySet="UserStories" />
+            <End Role="UserStoryHistory" EntitySet="UserStoryHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStorySprint_Sprint" Association="Self.FK_UserStorySprint_Sprint">
+            <End Role="Sprint" EntitySet="Sprint" />
+            <End Role="UserStorySprint" EntitySet="UserStorySprint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStorySprint_UserStories" Association="Self.FK_UserStorySprint_UserStories">
+            <End Role="UserStories" EntitySet="UserStories" />
+            <End Role="UserStorySprint" EntitySet="UserStorySprint" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Engineer.EMF.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="Attachments" Relationship="Self.FK_Attachment_Users" FromRole="AspNetUsers" ToRole="Attachment" />
+          <NavigationProperty Name="AttachmentHistories" Relationship="Self.FK_AttachmentHistory_Users" FromRole="AspNetUsers" ToRole="AttachmentHistory" />
+          <NavigationProperty Name="SprintHistories" Relationship="Self.FK_SprintHistory_Users" FromRole="AspNetUsers" ToRole="SprintHistory" />
+          <NavigationProperty Name="UserStories" Relationship="Self.FK_UserStories_AspNetUsers" FromRole="AspNetUsers" ToRole="UserStories" />
+          <NavigationProperty Name="UserStoryHistories" Relationship="Self.FK_UserStoryHistory_User" FromRole="AspNetUsers" ToRole="UserStoryHistory" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="UserStories1" Relationship="Self.AssignUSUser" FromRole="AspNetUsers" ToRole="UserStories" />
+        </EntityType>
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="attach" Type="Binary" MaxLength="2000" FixedLength="true" />
+          <Property Name="readonly" Type="Boolean" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="activties" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="create_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="update_date" Type="DateTime" Precision="3" />
+          <Property Name="update_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SVG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Attachment_Users" FromRole="Attachment" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AttachmentHistories" Relationship="Self.FK_AttachmentHistory_Attachment" FromRole="Attachment" ToRole="AttachmentHistory" />
+          <NavigationProperty Name="UserStories" Relationship="Self.UserStoryAttachment" FromRole="Attachment" ToRole="UserStories" />
+        </EntityType>
+        <EntityType Name="AttachmentHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Graph" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="AttachId" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_AttachmentHistory_Users" FromRole="AttachmentHistory" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Attachment" Relationship="Self.FK_AttachmentHistory_Attachment" FromRole="AttachmentHistory" ToRole="Attachment" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="created_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="update_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="updated_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="UserStories" Relationship="Self.FK_UserStories_Project" FromRole="Project" ToRole="UserStories" />
+        </EntityType>
+        <EntityType Name="Sprint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="number" Type="Int32" />
+          <Property Name="topic" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="sDate" Type="DateTime" Precision="3" />
+          <Property Name="eDate" Type="DateTime" Precision="3" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OriginalSprintNumber" Type="Int32" />
+          <NavigationProperty Name="SprintHistories" Relationship="Self.FK_SprintHistory_Sprint" FromRole="Sprint" ToRole="SprintHistory" />
+          <NavigationProperty Name="UserStories" Relationship="Self.UserStorySprint" FromRole="Sprint" ToRole="UserStories" />
+        </EntityType>
+        <EntityType Name="SprintHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sprintId" Type="Int32" />
+          <Property Name="closeDate" Type="DateTime" Precision="3" />
+          <Property Name="closedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_SprintHistory_Users" FromRole="SprintHistory" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Sprint" Relationship="Self.FK_SprintHistory_Sprint" FromRole="SprintHistory" ToRole="Sprint" />
+        </EntityType>
+        <EntityType Name="UserStory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="400" FixedLength="true" Unicode="true" />
+          <Property Name="updateDate" Type="DateTime" Precision="3" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="creator" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="projectId" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserStories_AspNetUsers" FromRole="UserStories" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_UserStories_Project" FromRole="UserStories" ToRole="Project" />
+          <NavigationProperty Name="UserStoryHistories" Relationship="Self.FK_UserStoryHistory_UserStory" FromRole="UserStories" ToRole="UserStoryHistory" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AssignUSUser" FromRole="UserStories" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Attachments" Relationship="Self.UserStoryAttachment" FromRole="UserStories" ToRole="Attachment" />
+          <NavigationProperty Name="Sprints" Relationship="Self.UserStorySprint" FromRole="UserStories" ToRole="Sprint" />
+        </EntityType>
+        <EntityType Name="UserStoryHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userStoryId" Type="Int32" />
+          <Property Name="closeDate" Type="DateTime" Precision="3" />
+          <Property Name="closedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserStoryHistory_User" FromRole="UserStoryHistory" ToRole="AspNetUsers" />
+          <NavigationProperty Name="UserStory" Relationship="Self.FK_UserStoryHistory_UserStory" FromRole="UserStoryHistory" ToRole="UserStories" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attachment_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="created_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttachmentHistory_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="AttachmentHistory" Type="Self.AttachmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttachmentHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SprintHistory_Users">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="SprintHistory" Type="Self.SprintHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SprintHistory">
+              <PropertyRef Name="closedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStories_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStories">
+              <PropertyRef Name="creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryHistory_User">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
+          <End Role="UserStoryHistory" Type="Self.UserStoryHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryHistory">
+              <PropertyRef Name="closedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AttachmentHistory_Attachment">
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="0..1" />
+          <End Role="AttachmentHistory" Type="Self.AttachmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attachment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AttachmentHistory">
+              <PropertyRef Name="AttachId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStories_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStories">
+              <PropertyRef Name="projectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SprintHistory_Sprint">
+          <End Role="Sprint" Type="Self.Sprint" Multiplicity="0..1" />
+          <End Role="SprintHistory" Type="Self.SprintHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sprint">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SprintHistory">
+              <PropertyRef Name="sprintId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserStoryHistory_UserStory">
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="0..1" />
+          <End Role="UserStoryHistory" Type="Self.UserStoryHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserStoryHistory">
+              <PropertyRef Name="userStoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <Association Name="AssignUSUser">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="*" />
+        </Association>
+        <Association Name="UserStoryAttachment">
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="*" />
+        </Association>
+        <Association Name="UserStorySprint">
+          <End Role="Sprint" Type="Self.Sprint" Multiplicity="*" />
+          <End Role="UserStories" Type="Self.UserStory" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="Attachments" EntityType="Self.Attachment" />
+          <EntitySet Name="AttachmentHistories" EntityType="Self.AttachmentHistory" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Sprints" EntityType="Self.Sprint" />
+          <EntitySet Name="SprintHistories" EntityType="Self.SprintHistory" />
+          <EntitySet Name="UserStories" EntityType="Self.UserStory" />
+          <EntitySet Name="UserStoryHistories" EntityType="Self.UserStoryHistory" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attachment_Users" Association="Self.FK_Attachment_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Attachment" EntitySet="Attachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttachmentHistory_Users" Association="Self.FK_AttachmentHistory_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AttachmentHistory" EntitySet="AttachmentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SprintHistory_Users" Association="Self.FK_SprintHistory_Users">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="SprintHistory" EntitySet="SprintHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStories_AspNetUsers" Association="Self.FK_UserStories_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryHistory_User" Association="Self.FK_UserStoryHistory_User">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserStoryHistory" EntitySet="UserStoryHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AttachmentHistory_Attachment" Association="Self.FK_AttachmentHistory_Attachment">
+            <End Role="Attachment" EntitySet="Attachments" />
+            <End Role="AttachmentHistory" EntitySet="AttachmentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStories_Project" Association="Self.FK_UserStories_Project">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SprintHistory_Sprint" Association="Self.FK_SprintHistory_Sprint">
+            <End Role="Sprint" EntitySet="Sprints" />
+            <End Role="SprintHistory" EntitySet="SprintHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserStoryHistory_UserStory" Association="Self.FK_UserStoryHistory_UserStory">
+            <End Role="UserStories" EntitySet="UserStories" />
+            <End Role="UserStoryHistory" EntitySet="UserStoryHistories" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="AssignUSUser" Association="Self.AssignUSUser">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="UserStoryAttachment" Association="Self.UserStoryAttachment">
+            <End Role="Attachment" EntitySet="Attachments" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+          <AssociationSet Name="UserStorySprint" Association="Self.UserStorySprint">
+            <End Role="Sprint" EntitySet="Sprints" />
+            <End Role="UserStories" EntitySet="UserStories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EngineerEMFModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attachments">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.Attachment">
+              <MappingFragment StoreEntitySet="Attachment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="attach" ColumnName="attach" />
+                <ScalarProperty Name="readonly" ColumnName="readonly" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="activties" ColumnName="activties" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="update_date" ColumnName="update_date" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="SVG" ColumnName="SVG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AttachmentHistories">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.AttachmentHistory">
+              <MappingFragment StoreEntitySet="AttachmentHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Graph" ColumnName="Graph" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AttachId" ColumnName="AttachId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="update_by" ColumnName="update_by" />
+                <ScalarProperty Name="updated_date" ColumnName="updated_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sprints">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.Sprint">
+              <MappingFragment StoreEntitySet="Sprint">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="number" ColumnName="number" />
+                <ScalarProperty Name="topic" ColumnName="topic" />
+                <ScalarProperty Name="sDate" ColumnName="sDate" />
+                <ScalarProperty Name="eDate" ColumnName="eDate" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="OriginalSprintNumber" ColumnName="OriginalSprintNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SprintHistories">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.SprintHistory">
+              <MappingFragment StoreEntitySet="SprintHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="sprintId" ColumnName="sprintId" />
+                <ScalarProperty Name="closeDate" ColumnName="closeDate" />
+                <ScalarProperty Name="closedBy" ColumnName="closedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStories">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.UserStory">
+              <MappingFragment StoreEntitySet="UserStories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="creator" ColumnName="creator" />
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStoryHistories">
+            <EntityTypeMapping TypeName="Engineer.EMF.Model.UserStoryHistory">
+              <MappingFragment StoreEntitySet="UserStoryHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="userStoryId" ColumnName="userStoryId" />
+                <ScalarProperty Name="closeDate" ColumnName="closeDate" />
+                <ScalarProperty Name="closedBy" ColumnName="closedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Engineer.EMF.Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="AssignUSUser" TypeName="Engineer.EMF.Model.AssignUSUser" StoreEntitySet="AssignUSUser">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="userId" />
+            </EndProperty>
+            <EndProperty Name="UserStories">
+              <ScalarProperty Name="Id" ColumnName="userStoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserStoryAttachment" TypeName="Engineer.EMF.Model.UserStoryAttachment" StoreEntitySet="UserStoryAttachment">
+            <EndProperty Name="Attachment">
+              <ScalarProperty Name="Id" ColumnName="attachId" />
+            </EndProperty>
+            <EndProperty Name="UserStories">
+              <ScalarProperty Name="Id" ColumnName="userStoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="UserStorySprint" TypeName="Engineer.EMF.Model.UserStorySprint" StoreEntitySet="UserStorySprint">
+            <EndProperty Name="Sprint">
+              <ScalarProperty Name="Id" ColumnName="sprintId" />
+            </EndProperty>
+            <EndProperty Name="UserStories">
+              <ScalarProperty Name="Id" ColumnName="userStoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

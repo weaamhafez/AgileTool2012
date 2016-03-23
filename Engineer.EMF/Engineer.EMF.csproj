@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19F264E4-C9E6-4BDC-988B-A884C223CC0E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Engineer.EMF</RootNamespace>
+    <AssemblyName>Engineer.EMF</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\AppConstants.cs" />
+    <Compile Include="App_Code\Exceptions\BadRequestException.cs" />
+    <Compile Include="App_Code\Models\DataTableResult.cs" />
+    <Compile Include="App_Code\Repository\BaseRepository.cs" />
+    <Compile Include="App_Code\Repository\RepositoryLocator.cs" />
+    <Compile Include="App_Code\Exceptions\NotExistItemException.cs" />
+    <Compile Include="App_Code\Repository\ProjectRepository.cs" />
+    <Compile Include="App_Code\Repository\SprintRepository.cs" />
+    <Compile Include="App_Code\Repository\DiagramRepository.cs" />
+    <Compile Include="App_Code\Repository\UserRepository.cs" />
+    <Compile Include="App_Code\Repository\UserStoryRepository.cs" />
+    <Compile Include="App_Code\Utils\AttachmentComparer.cs" />
+    <Compile Include="App_Code\Utils\UserComparer.cs" />
+    <Compile Include="AspNetRole.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserClaim.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserLogin.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Attachment.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AttachmentHistory.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EngineerModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineerModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EngineerModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EngineerModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EngineerModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Project.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sprint.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SprintHistory.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserStory.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserStoryHistory.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="aspnet-EngineerWeb-20160302104213.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="aspnet-EngineerWeb-20160302104213_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>aspnet-EngineerWeb-20160302104213.mdf</DependentUpon>
+    </Content>
+    <Content Include="EngineerModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EngineerModel.edmx</DependentUpon>
+      <LastGenOutput>EngineerModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="EngineerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EngineerModel.edmx</DependentUpon>
+      <LastGenOutput>EngineerModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="EngineerModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EngineerModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EngineerModel.edmx.diagram">
+      <DependentUpon>EngineerModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
