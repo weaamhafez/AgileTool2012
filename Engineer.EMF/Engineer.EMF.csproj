@@ -66,6 +66,7 @@
     <Compile Include="App_Code\Repository\DiagramRepository.cs" />
     <Compile Include="App_Code\Repository\UserRepository.cs" />
     <Compile Include="App_Code\Repository\UserStoryRepository.cs" />
+    <Compile Include="App_Code\Utils\AttachmentAndUserStoryComparer.cs" />
     <Compile Include="App_Code\Utils\AttachmentComparer.cs" />
     <Compile Include="App_Code\Utils\UserComparer.cs" />
     <Compile Include="App_Code\Utils\UserStoryComparer.cs" />

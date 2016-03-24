@@ -85,7 +85,6 @@
                         <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
                         <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>
                         <li><a href='<%=ResolveUrl("Sprint/List") %>' ><i class="glyphicon glyphicon-share-alt"></i> Sprints</a></li>
-                        <li><a href='<%=ResolveUrl("Reports/ListStories") %>' ><i class="glyphicon glyphicon-pencil"></i> Reports</a></li>
                         <li>
 					        <a href="javascript:void(0);" data-toggle="collapse" data-target="#dataCatureMenuItem" class="collapsed" aria-expanded="false"><i class="glyphicon glyphicon-search"></i> Search <i class="glyphicon glyphicon-collapse-down"></i></a>
 					        <ul id="dataCatureMenuItem" class="collapse" aria-expanded="false">

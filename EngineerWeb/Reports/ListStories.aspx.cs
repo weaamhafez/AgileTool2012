@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -12,6 +13,7 @@ namespace EngineerWeb.Reports
     public partial class ListStories : System.Web.UI.Page
     {
         static UserStoryService service = (UserStoryService)new ServiceLocator<Engineer.EMF.UserStory>().locate();
+        [PrincipalPermission(SecurityAction.Demand, Authenticated = true, Role = "Admin")]
         protected void Page_Load(object sender, EventArgs e)
         {
             if(!IsPostBack)

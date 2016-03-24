@@ -51,9 +51,26 @@ namespace Engineer.EMF
             return attachments;
         }
 
-        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories)
+        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories, string sprint, string diagramName)
         {
-            var attachments = new List<Attachment>();
+
+            // get by closed user stories
+            var attachments  = db.Attachments.Where(w => w.UserStories.Where(us => us.state == AppConstants.USERSTORY_STATUS_FINISIHED).Count() > 0
+            && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList();
+
+            // get by closed sprints
+            var closedSprints = db.Sprints.Where(w => w.state == AppConstants.SPRINT_STATUS_CLOSED).ToList();
+            foreach(var closedSprint in closedSprints)
+            {
+                closedSprint.UserStories.ToList().ForEach(f =>
+                {
+                    attachments.AddRange(f.Attachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList().Except(attachments, new AttachmentAndUserStoryComparer()));
+                });
+            }
+
+
+            //-------------------------------------------------------------------------
+            //attachments.AddRange()
             if(users != null)
             {
                 users.ToList().ForEach(userId =>
@@ -73,6 +90,7 @@ namespace Engineer.EMF
                         ).AsEnumerable().Except(attachments, new AttachmentComparer()));
                 });
             }
+            
             return attachments;
         }
 
@@ -119,6 +137,7 @@ namespace Engineer.EMF
             exist.update_date = DateTime.Now;
             exist.update_by = userId;
             exist.state = diagram.state;
+            exist.UserStories = diagram.UserStories;
             db.SaveChanges();
         }
 

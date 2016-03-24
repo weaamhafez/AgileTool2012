@@ -2,6 +2,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="panel-body" id="searchDiv">
             <div class="form-group">
+			    <label for="Users" class="col-md-2 control-label">Select Sprint</label>
+			    <div class="col-md-5">
+			        <asp:ListBox CssClass="selectpicker" ClientIDMode="Static" ID="Sprint" runat="server" DataTextField="number" DataValueField="Id" data-live-search="true" />
+			    </div>
+		    </div>
+            <div class="form-group">
+			    <label for="Users" class="col-md-2 control-label">Diagram</label>
+			    <div class="col-md-5">
+                     <asp:TextBox CssClass="form-input" runat="server" ID="DiagramName" ClientIDMode="Static"></asp:TextBox>
+			    </div>
+		    </div>
+            <div class="form-group">
 			    <label for="Users" class="col-md-2 control-label">Select Users</label>
 			    <div class="col-md-5">
 			        <asp:ListBox CssClass="selectpicker" ClientIDMode="Static" ID="Users" runat="server" DataTextField="UserName" DataValueField="Id" data-live-search="true" SelectionMode="Multiple" required/>

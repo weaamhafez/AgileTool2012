@@ -70,6 +70,16 @@ namespace EngineerWeb.Diagram
                 diagramID.Value = diagram.Id.ToString();
                 diagramName.Text = diagram.name;
                 diagramGraph.Value = diagram.activties;
+
+                if(diagram.UserStories != null && diagram.UserStories.ToList() != null)
+                {
+                    diagram.UserStories.ToList().ForEach(f =>
+                    {
+                        var item = UserStoriesList.Items.FindByValue(f.Id.ToString());
+                        if (item != null)
+                            item.Selected = true;
+                    });
+                }
             }
         }
 

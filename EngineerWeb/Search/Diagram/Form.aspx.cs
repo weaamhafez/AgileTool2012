@@ -35,13 +35,21 @@ namespace EngineerWeb.Search.Diagram
             {
                 string[] users = null;
                 string[] stories = null;
+                string sprint = null;
+                string diagramName = null;
                 if(usersAndStory.Keys.Contains("Users"))
                     users = usersAndStory["Users"].ToString().Split(',');
 
                 if (usersAndStory.Keys.Contains("Stories"))
                     stories = usersAndStory["Stories"].ToString().Split(',');
 
-                List<Attachment> attachments = service.FindByUsersAndStories(users,stories);
+                if (usersAndStory.Keys.Contains("Sprint"))
+                    sprint = usersAndStory["Sprint"].ToString();
+
+                if (usersAndStory.Keys.Contains("DiagramName"))
+                    diagramName = usersAndStory["DiagramName"].ToString();
+
+                List<Attachment> attachments = service.FindByUsersAndStories(users,stories,sprint,diagramName);
                 return Utils.SerializeObject(attachments);
             }
             catch (BadRequestException ex)

@@ -13,6 +13,24 @@ namespace EngineerWeb.Search.Diagram {
     public partial class Form {
         
         /// <summary>
+        /// Sprint control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox Sprint;
+        
+        /// <summary>
+        /// DiagramName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox DiagramName;
+        
+        /// <summary>
         /// Users control.
         /// </summary>
         /// <remarks>

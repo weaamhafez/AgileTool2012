@@ -55,9 +55,9 @@ namespace Engineer.Service
             return repository.FindByStoryID(id);
         }
 
-        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories)
+        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories,string sprint,string diagramName)
         {
-            return repository.FindByUsersAndStories(users, stories);
+            return repository.FindByUsersAndStories(users, stories,sprint,diagramName);
         }
 
         public int SaveOrUpdate(Attachment diagramObject, string[] userStoriesIds, string graph, string userId)
