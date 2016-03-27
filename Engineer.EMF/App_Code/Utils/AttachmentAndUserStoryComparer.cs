@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace Engineer.EMF.Utils
 {
-    public class AttachmentAndUserStoryComparer : IEqualityComparer<Attachment>
+    public class AttachmentAndUserStoryComparer : IEqualityComparer<UserStoryAttachment>
     {
-        public bool Equals(Attachment x, Attachment y)
+        public bool Equals(UserStoryAttachment x, UserStoryAttachment y)
         {
-            throw new NotImplementedException();
-            //return x.Id == y.Id && x.user
+            return x.attachId == y.attachId && x.userStoryId == y.userStoryId;
         }
 
-        public int GetHashCode(Attachment obj)
+        public int GetHashCode(UserStoryAttachment obj)
         {
-            throw new NotImplementedException();
+            return obj.attachId + obj.userStoryId;
         }
     }
 }

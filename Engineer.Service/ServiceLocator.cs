@@ -14,7 +14,7 @@ namespace Engineer.Service
                 return new UserStoryService();
 
             else if (typeof(T).FullName == "Engineer.EMF.Project")
-                return new UserStoryService();
+                return new ProjectService();
 
             else if (typeof(T).FullName == "Engineer.EMF.Sprint")
                 return new SprintService();

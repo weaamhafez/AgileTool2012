@@ -20,7 +20,7 @@
                                            aria-haspopup="true" aria-expanded="false">File
                                             <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a data-target="#renameModal" data-toggle="modal">
+                                            <li id="renameMenu"><a data-target="#renameModal" data-toggle="modal">
                                                 Rename</a></li>
                                             <li class="dropdown-divider"></li>
                                             <li><a onclick="save()"><!-- <i class="fa fa-cloud-upload"></i>-->
@@ -106,6 +106,7 @@
                                 <div class="form-group">
                                     <asp:HiddenField runat="server" ID="diagramID" ClientIDMode="Static" />
                                     <asp:HiddenField runat="server" ID="diagramGraph" ClientIDMode="Static" />
+                                    <asp:HiddenField runat="server" ID="UserStoryID" ClientIDMode="Static" />
                                     <label for="story-name" class="col-md-3 control-label">Name</label>
                                     <div class="col-md-8">
                                         <asp:TextBox CssClass="form-control" ID="diagramName" ClientIDMode="Static" required runat="server" ></asp:TextBox>
@@ -121,6 +122,7 @@
             </div>
     <script type="text/javascript">
         var templatesClientId = "<%=Templates.ClientID%>";
-        var saveOrUpdateURL = '<%=ResolveUrl("New.aspx/SaveOrUpdate")%>';
+        var saveURL = '<%=ResolveUrl("New.aspx/Save")%>';
+        var updateURL = '<%=ResolveUrl("New.aspx/Update")%>';
     </script>
 </asp:Content>

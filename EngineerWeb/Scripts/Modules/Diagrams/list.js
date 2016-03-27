@@ -57,7 +57,7 @@ $(document).ready(function () {
         "paging": true,
         "columns": [
             {
-                "data": "name",
+                "data": "Attachment.name",
             },
             {
                 "data": "@readonly",
@@ -66,11 +66,12 @@ $(document).ready(function () {
                 }
             },
             {
-                "data": "name",
+                "data": "Attachment.name",
                 "render": function (data, type, full, meta) {
                     return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' +
-                        (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.Id + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="openRemoveDialog(this)">Delete</a></li>' : ' ')+
-                        (full.readonly ? '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="openView(this)">View as image</a></li>' : ' ') +'</ul></div>';
+                        (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' : ' ') +
+                        //(full.readonly ? '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="openView(this)">View as image</a></li>' : ' ') +
+                        '</ul></div>';
                 }
             }
         ]

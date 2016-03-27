@@ -21,5 +21,10 @@ namespace Engineer.Service
         {
             return uRepository.FindByDiagram(diagramId);
         }
+
+        public List<AspNetUser> FindAssignedUsersByProject(string projectId)
+        {
+            return uRepository.GetByProject(projectId);
+        }
     }
 }

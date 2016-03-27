@@ -25,15 +25,21 @@ namespace Engineer.EMF
             int id = int.Parse(diagramId);
             // get by creator
             var users = db.AspNetUsers.Where(w => w.UserStories
-            .Where(story => story.Attachments
-            .Where(attach => attach.Id == id).Count() > 0).Count() > 0).ToList();
+            .Where(story => story.UserStoryAttachments
+            .Where(attach => attach.attachId == id).Count() > 0).Count() > 0).ToList();
 
             // get by shared
             users.AddRange(db.AspNetUsers.Where(w => w.UserStories1
-             .Where(story => story.Attachments
-            .Where(attach => attach.Id == id).Count() > 0).Count() > 0).AsEnumerable().Except(users,new UserComparer()));
+             .Where(story => story.UserStoryAttachments
+            .Where(attach => attach.attachId == id).Count() > 0).Count() > 0).AsEnumerable().Except(users,new UserComparer()));
 
             return users;
+        }
+
+        public List<AspNetUser> GetByProject(string projectId)
+        {
+            int projectIdInt = int.Parse(projectId);
+            return db.AspNetUsers.Where(w => w.Projects.Where(proj => proj.Id == projectIdInt).Count() > 0).ToList();
         }
     }
 }

@@ -85,7 +85,7 @@ function save(type) {
         errorAlert('Your Form contains errors, please fix them before saving');
         return;
     }
-    if ($("#UserStoriesList").val() == null || $("#UserStoriesList").val() == "")
+    if (($("#UserStoriesList").val() == null || $("#UserStoriesList").val() == "" ) && $("#diagramID").val() == "")
     {
         errorAlert("Please select at least 1 user story");
         return;
@@ -109,13 +109,14 @@ function save(type) {
             userStories:$("#UserStoriesList").val(),
             graph: graphStr,
             svg: svgString,
-            Id: $("#diagramID").val()
+            Id: $("#diagramID").val(),
+            userStoryId: $("#UserStoryID").val()
         }
         
     };
     
     $.ajax({
-        url: saveOrUpdateURL,
+        url: $("#diagramID").val() == "" ? saveURL : updateURL,
         type: 'POST',
         data: JSON.stringify(diagram),
         contentType: 'application/json; charset=utf-8',
@@ -124,7 +125,7 @@ function save(type) {
             successAlert('Your Diagram have been successfully Saved');
 
             if ($("#diagramID").val() == "") {
-                window.location.href = 'New?id=' + formId.d;
+                window.location.href = 'List';
             }
         },
         error: function (jqXHR, err) {
@@ -158,6 +159,8 @@ function loadGraph()
         }
         graph = graph.fromJSON(graphJSON);
         rect = graph.attributes.cells.models[graph.attributes.cells.models.length - 2];
+
+        $("#renameMenu").hide();
     }
 }
 $(document).ready(function () {
@@ -174,5 +177,5 @@ $(document).ready(function () {
             $('#renameModal').modal('hide');
         }
     });
-
+    
 }); //end ready

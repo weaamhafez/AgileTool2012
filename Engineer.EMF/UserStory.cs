@@ -18,9 +18,10 @@ namespace Engineer.EMF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UserStory()
         {
+            this.AttachmentHistories = new HashSet<AttachmentHistory>();
+            this.UserStoryAttachments = new HashSet<UserStoryAttachment>();
             this.UserStoryHistories = new HashSet<UserStoryHistory>();
             this.AspNetUsers = new HashSet<AspNetUser>();
-            this.Attachments = new HashSet<Attachment>();
             this.Sprints = new HashSet<Sprint>();
         }
     
@@ -33,18 +34,21 @@ namespace Engineer.EMF
         public Nullable<int> projectId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
+        public virtual ICollection<AttachmentHistory> AttachmentHistories { get; set; }
         public virtual Project Project { get; set; }
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
+        public virtual ICollection<UserStoryAttachment> UserStoryAttachments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<UserStoryHistory> UserStoryHistories { get; set; }
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attachment> Attachments { get; set; }
         [JsonIgnore]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sprint> Sprints { get; set; }
     }
 }

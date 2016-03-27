@@ -12,16 +12,17 @@ namespace Engineer.EMF
     using System;
     using System.Collections.Generic;
     
-    public partial class AttachmentHistory
+    public partial class UserStoryAttachment
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
-        public string Graph { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public Nullable<int> AttachId { get; set; }
-        public Nullable<int> UserStoryId { get; set; }
+        public int userStoryId { get; set; }
+        public int attachId { get; set; }
+        public string activties { get; set; }
+        public Nullable<System.DateTime> update_date { get; set; }
+        public string update_by { get; set; }
+        public string state { get; set; }
+        public Nullable<bool> @readonly { get; set; }
+        public string SVG { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Attachment Attachment { get; set; }
         public virtual UserStory UserStory { get; set; }
     }

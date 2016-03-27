@@ -30,7 +30,7 @@ namespace EngineerWeb.Search.User
         private void BindDiagram()
         {
             DiagramService diagramService = (DiagramService)new ServiceLocator<Attachment>().locate();
-            List<Attachment> attachments = diagramService.ListAll();
+            List<UserStoryAttachment> attachments = diagramService.ListAll();
             Diagrams.DataSource = attachments;
             Diagrams.DataBind();
         }

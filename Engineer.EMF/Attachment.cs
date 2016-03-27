@@ -19,29 +19,21 @@ namespace Engineer.EMF
         public Attachment()
         {
             this.AttachmentHistories = new HashSet<AttachmentHistory>();
-            this.UserStories = new HashSet<UserStory>();
+            this.UserStoryAttachments = new HashSet<UserStoryAttachment>();
         }
     
         public int Id { get; set; }
         public byte[] attach { get; set; }
-        public Nullable<bool> @readonly { get; set; }
         public string name { get; set; }
-        [JsonIgnore]
-        public string activties { get; set; }
         public Nullable<System.DateTime> create_date { get; set; }
         public string created_by { get; set; }
-        public Nullable<System.DateTime> update_date { get; set; }
-        public string update_by { get; set; }
-        public string state { get; set; }
-        [JsonIgnore]
-        public string SVG { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<AttachmentHistory> AttachmentHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [JsonIgnore]
-        public virtual ICollection<UserStory> UserStories { get; set; }
+        public virtual ICollection<UserStoryAttachment> UserStoryAttachments { get; set; }
     }
 }

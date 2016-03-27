@@ -58,6 +58,7 @@
     <Compile Include="App_Code\AppConstants.cs" />
     <Compile Include="App_Code\Exceptions\BadRequestException.cs" />
     <Compile Include="App_Code\Models\DataTableResult.cs" />
+    <Compile Include="App_Code\Models\DiagramSearchModel.cs" />
     <Compile Include="App_Code\Repository\BaseRepository.cs" />
     <Compile Include="App_Code\Repository\RepositoryLocator.cs" />
     <Compile Include="App_Code\Exceptions\NotExistItemException.cs" />
@@ -65,9 +66,11 @@
     <Compile Include="App_Code\Repository\SprintRepository.cs" />
     <Compile Include="App_Code\Repository\DiagramRepository.cs" />
     <Compile Include="App_Code\Repository\UserRepository.cs" />
+    <Compile Include="App_Code\Repository\UserStoryAttachmentRepository.cs" />
     <Compile Include="App_Code\Repository\UserStoryRepository.cs" />
     <Compile Include="App_Code\Utils\AttachmentAndUserStoryComparer.cs" />
     <Compile Include="App_Code\Utils\AttachmentComparer.cs" />
+    <Compile Include="App_Code\Utils\AttachUSAndSprintComparer.cs" />
     <Compile Include="App_Code\Utils\UserComparer.cs" />
     <Compile Include="App_Code\Utils\UserStoryComparer.cs" />
     <Compile Include="AspNetRole.cs">
@@ -114,6 +117,9 @@
       <DependentUpon>EngineerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserStory.cs">
+      <DependentUpon>EngineerModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserStoryAttachment.cs">
       <DependentUpon>EngineerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserStoryHistory.cs">

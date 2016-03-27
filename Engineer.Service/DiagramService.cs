@@ -9,19 +9,21 @@ using Engineer.EMF.Utils.Exceptions;
 using System.Transactions;
 using Engineer.EMF.Utils;
 using System.Configuration;
+using Engineer.EMF.Models;
 
 namespace Engineer.Service
 {
     public class DiagramService
     {
         DiagramRepository repository = new DiagramRepository();
-        public void Delete(Attachment diagram)
+        UserStoryAttachmentRepository rep = new UserStoryAttachmentRepository();
+        public void Delete(UserStoryAttachment diagram)
         {
             diagram.state = AppConstants.DIAGRAM_STATUS_FINISIHED;
-            repository.UpdateStatus(diagram);
+            rep.UpdateStatus(diagram);
         }
 
-        public List<Attachment> FindByStoryID(int Id)
+        public List<UserStoryAttachment> FindByStoryID(int Id)
         {
             try
             {
@@ -33,12 +35,17 @@ namespace Engineer.Service
             }
         }
 
-        public List<Attachment> FindByUsers(string[] users)
+        public List<UserStoryAttachment> FindByUsers(string[] users)
         {
             return repository.FindByUsers(users);
         }
 
-        public List<Attachment> ListAll()
+        public UserStoryAttachment FindByIDAndUserStory(int id, int userStoryId)
+        {
+            return rep.Get(new UserStoryAttachment() { attachId = id,userStoryId=userStoryId });
+        }
+
+        public List<UserStoryAttachment> ListAll()
         {
             try
             {
@@ -50,20 +57,19 @@ namespace Engineer.Service
             }
         }
 
-        public List<Attachment> FindByUserStory(int id)
+        public List<UserStoryAttachment> FindByUserStory(int id)
         {
             return repository.FindByStoryID(id);
         }
 
-        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories,string sprint,string diagramName)
+        public List<DiagramSearchModel> FindByUsersAndStories(string[] users, string[] stories,string sprint,string diagramName)
         {
             return repository.FindByUsersAndStories(users, stories,sprint,diagramName);
         }
 
-        public int SaveOrUpdate(Attachment diagramObject, string[] userStoriesIds, string graph, string userId)
+        public int Add(Attachment diagramObject, string[] userStoriesIds, string graph, string userId,string svg)
         {
             int id = 0;
-            bool isNew = diagramObject.Id <= 0;
             TransactionOptions _transcOptions = new TransactionOptions();
             _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
             using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
@@ -80,17 +86,19 @@ namespace Engineer.Service
                             if (userStory == null)
                                 throw new BadRequestException(AppConstants.EXCEPTION_USER_STORY_CANNOT_FIND);
 
-                            diagramObject.UserStories.Add(userStory);
+                            diagramObject.UserStoryAttachments.Add(new UserStoryAttachment() {
+                                UserStory = userStory,
+                                activties = graph,
+                                SVG = svg,
+                                state = AppConstants.DIAGRAM_STATUS_OPEN
+                            });
                         }
                     }
-                    if (!string.IsNullOrEmpty(graph))
-                        diagramObject.activties = graph;
 
-                    id  = repository.SaveOrUpdate(diagramObject, userId);
+                    id  = repository.Add(diagramObject, userId);
                     diagramObject.Id = id;
-                    repository.SaveToHistory(diagramObject, userId);
                     #endregion
-                    
+
                     sc.Complete();
                 }
                 catch (Exception ex)
@@ -103,10 +111,44 @@ namespace Engineer.Service
                 }
                 
             }
+            return id;
+
+        }
+
+        public int Update(UserStoryAttachment diagramObject, string graph, string userId, string svg)
+        {
+            int id = 0;
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
+            {
+                try
+                {
+                    #region adding user stories
+                    diagramObject.activties = graph;
+                    diagramObject.SVG = svg;
+                    diagramObject.state = AppConstants.DIAGRAM_STATUS_OPEN;
+
+
+                    repository.Update(diagramObject, userId);
+                    repository.SaveToHistory(diagramObject, userId);
+                    #endregion
+
+                    sc.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new BadRequestException(AppConstants.EXCEPTION_DIAGRAM_SAVING_ERROR);
+                }
+                finally
+                {
+                    sc.Dispose();
+                }
+
+            }
             #region send email notification in case diagram updated
             try
             {
-                if (!isNew)
                     SendUpdateEmail(diagramObject, userId);
             }
             catch (Exception ex)
@@ -120,43 +162,47 @@ namespace Engineer.Service
 
         }
 
-        private void SendUpdateEmail(Attachment diagramObject,string userId)
+        private void SendUpdateEmail(UserStoryAttachment diagramObject,string userId)
         {
             MailService mailService = MailService.Instance;
             string _mailConfigFilePath = AppDomain.CurrentDomain.GetData("DataDirectory") + "\\Mail.xml";
             mailService.LoadFile(_mailConfigFilePath);
             DTOMessage message = mailService.GetMessage("EditDiagram");
-            var users = new List<AspNetUser>();
             string sendFrom = (ConfigurationSettings.AppSettings["MailFromAddress"] != null) ? ConfigurationSettings.AppSettings["MailFromAddress"].ToString() : "";
-            diagramObject.UserStories.ToList().ForEach(f =>
-            {
-                users.AddRange(f.AspNetUsers.Except(users, new UserComparer()));
-            });
             UserRepository uRepositorty = new UserRepository();
             var actionUser = uRepositorty.FindById(userId);
-            foreach (AspNetUser user in users)
+            diagramObject.UserStory.AspNetUsers.ToList().ForEach(f =>
             {
-                string messageSubject = MailService.formatMsg(message.Subject, new string[] { diagramObject.Id.ToString() });
-                string bodyStr = MailService.formatMsg(message.Body, new string[] { diagramObject.Id.ToString(), user.UserName, actionUser.UserName });
-                MailService.SendMessageWithAttachment(sendFrom, user.Email, null, messageSubject, bodyStr, null);
-            }
+                string messageSubject = MailService.formatMsg(message.Subject, new string[] { diagramObject.attachId.ToString() });
+                string bodyStr = MailService.formatMsg(message.Body, new string[] { diagramObject.attachId.ToString(), f.UserName, actionUser.UserName });
+                MailService.SendMessageWithAttachment(sendFrom, f.Email, null, messageSubject, bodyStr, null);
+            });
         }
 
-        public Attachment FindByID(int id)
-        {
-            return repository.Get(new Attachment() { Id = id });
-        }
+        //public Attachment FindByID(int id)
+        //{
+        //    return repository.Get(new Attachment() { Id = id });
+        //}
 
-        public void LockDiagrams(List<Attachment> diagrams)
+        public void LockDiagrams(List<UserStoryAttachment> diagrams)
         {
-            foreach(Attachment attach in diagrams)
+            foreach(UserStoryAttachment attach in diagrams)
             {
                 attach.@readonly = true;
                 repository.UpdateLock(attach);
             }
         }
 
-        public List<Attachment> FindBySprint(int sprintId)
+        public void UnLockDiagrams(List<UserStoryAttachment> diagrams)
+        {
+            foreach (UserStoryAttachment attach in diagrams)
+            {
+                attach.@readonly = false;
+                repository.UpdateLock(attach);
+            }
+        }
+
+        public List<UserStoryAttachment> FindBySprint(int sprintId)
         {
             return repository.FindBySprintID(sprintId);
         }

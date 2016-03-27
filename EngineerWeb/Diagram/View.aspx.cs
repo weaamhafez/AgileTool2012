@@ -22,7 +22,7 @@ namespace EngineerWeb.Diagram
                         "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/view.js") + "\" />", false);
                 if (!string.IsNullOrEmpty(Request.Params["id"]))
                 {
-                    var diagram = service.FindByID(int.Parse(Request.Params["id"]));
+                    var diagram = service.FindByIDAndUserStory(int.Parse(Request.Params["id"]),int.Parse(Request.Params["storyId"]));
                     Response.Write(diagram.SVG);
                     Response.Flush();
                 }

@@ -42,7 +42,7 @@ namespace EngineerWeb.Reports
             string Id = gvResult.DataKeys[Convert.ToInt32(e.CommandArgument)].Values[0].ToString();
             DiagramService dService = (DiagramService)new ServiceLocator<Engineer.EMF.Attachment>().locate();
             var diagrams = dService.FindByStoryID(int.Parse(Id));
-            Diagrams.DataSource = diagrams != null ? diagrams : new List<Engineer.EMF.Attachment>();
+            Diagrams.DataSource = diagrams != null ? diagrams : new List<Engineer.EMF.UserStoryAttachment>();
             Diagrams.DataBind();
             Diagrams.Visible = true;
         }

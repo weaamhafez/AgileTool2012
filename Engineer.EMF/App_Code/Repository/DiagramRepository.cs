@@ -1,8 +1,10 @@
-﻿using Engineer.EMF.Utils;
+﻿using Engineer.EMF.Models;
+using Engineer.EMF.Utils;
 using Engineer.EMF.Utils.Exceptions;
 using Engineer.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -12,18 +14,17 @@ namespace Engineer.EMF
 {
     public class DiagramRepository : BaseRepository
     {
-        public List<Attachment> ListAll(string userId)
+        public List<UserStoryAttachment> ListAll(string userId)
         {
-            var diagrams = new List<Attachment>();
+            var diagrams = new List<UserStoryAttachment>();
             try
             {
-                db.Attachments.Where(w=>w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList().ForEach(diagram =>
+                db.UserStoryAttachments.Where(w=>w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList().ForEach(diagram =>
                 {
-                    diagram.UserStories.ToList().ForEach(
-                        us =>
+                    diagram.UserStory.AspNetUsers.ToList().ForEach(
+                        user =>
                         {
-                            var userObject = us.AspNetUsers.ToList().SingleOrDefault(user => user.Id == userId);
-                            if (userObject != null && !diagrams.Contains(diagram,new AttachmentComparer()))
+                            if (user != null && user.Id == userId)
                                 diagrams.Add(diagram);
                         });
                 });
@@ -36,14 +37,14 @@ namespace Engineer.EMF
             return diagrams;
         }
 
-        public List<Attachment> FindAll()
+        public List<UserStoryAttachment> FindAll()
         {
-            return db.Attachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList();
+            return db.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList();
         }
 
-        public List<Attachment> FindByUsers(string[] users)
+        public List<UserStoryAttachment> FindByUsers(string[] users)
         {
-            var attachments = new List<Attachment>();
+            var attachments = new List<UserStoryAttachment>();
             users.ToList().ForEach(userId =>
             {
                 attachments.AddRange(ListAll(userId));
@@ -51,101 +52,125 @@ namespace Engineer.EMF
             return attachments;
         }
 
-        public List<Attachment> FindByUsersAndStories(string[] users, string[] stories, string sprint, string diagramName)
+        public List<DiagramSearchModel> FindByUsersAndStories(string[] users, string[] stories, string sprint, string diagramName)
         {
-
             // get by closed user stories
-            var attachments  = db.Attachments.Where(w => w.UserStories.Where(us => us.state == AppConstants.USERSTORY_STATUS_FINISIHED).Count() > 0
-            && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList();
-
-            // get by closed sprints
-            var closedSprints = db.Sprints.Where(w => w.state == AppConstants.SPRINT_STATUS_CLOSED).ToList();
-            foreach(var closedSprint in closedSprints)
+            var diagrams = new List<DiagramSearchModel>();
+            var attachments = new Dictionary<string,List<UserStoryAttachment>>();
+            // get by diagramName
+            if (!string.IsNullOrEmpty(diagramName))
             {
-                closedSprint.UserStories.ToList().ForEach(f =>
-                {
-                    attachments.AddRange(f.Attachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList().Except(attachments, new AttachmentAndUserStoryComparer()));
-                });
+                attachments.Add("diagrams", db.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.Attachment.name.Contains(diagramName) &&
+                // user stories or sprints is closed
+                (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED || w.UserStory.Sprints.Select(s => s.state == AppConstants.SPRINT_STATUS_CLOSED).Count() > 0)).ToList())
+                ;
+
             }
 
 
-            //-------------------------------------------------------------------------
-            //attachments.AddRange()
-            if(users != null)
+
+            // get by closed US
+            if (stories != null && stories.Length > 0 && !stories.Contains("0"))
             {
-                users.ToList().ForEach(userId =>
+               
+                var closedStories = db.UserStories.Where(w => w.state == AppConstants.USERSTORY_STATUS_FINISIHED
+                && stories.Contains(w.Id.ToString()));
+                var attachmentsByStories = new List<UserStoryAttachment>();
+                closedStories.ToList().ForEach(f =>
                 {
-                    attachments.AddRange(ListAll(userId));
+                    attachmentsByStories.AddRange(f.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED));
                 });
+                attachments.Add("stories", attachmentsByStories);
             }
-           
-            if(stories != null)
+
+            // get by closed sprint
+            if (!string.IsNullOrEmpty(sprint) && sprint != "0")
             {
-                stories.ToList().ForEach(story =>
+                var searchBySprints = sprint.Split(',');
+                var closedSprints = db.Sprints.Where(w => w.state == AppConstants.SPRINT_STATUS_CLOSED).ToList();
+                var attachmentBySprint = new List<UserStoryAttachment>();
+                foreach (var closedSprint in closedSprints)
                 {
-                    int storyId = int.Parse(story);
-                    attachments.AddRange(db.Attachments.Where(
-                        attach => 
-                        attach.UserStories.Where(t => t.Id == storyId).Count() > 0 && attach.state != AppConstants.DIAGRAM_STATUS_FINISIHED
-                        ).AsEnumerable().Except(attachments, new AttachmentComparer()));
-                });
+                    closedSprint.UserStories.ToList().ForEach(f =>
+                    {
+                        if (searchBySprints.Contains(closedSprint.Id.ToString()))
+                        {
+                            attachmentBySprint.AddRange(f.UserStoryAttachments.Where(
+                            w =>
+                            w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList());
+                        }
+                    });
+                }
+                attachments.Add("sprints", attachmentBySprint);
             }
+
+            //get by users
+            if (users != null && users.Length > 0)
+            {
+                var attachmentsByUsers = db.UserStoryAttachments.Where(w => (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED || w.UserStory.Sprints.Select(t => t.state == AppConstants.SPRINT_STATUS_CLOSED).Count() > 0)
+                && w.UserStory.AspNetUsers.Where(t => users.Contains(t.Id)).Count() > 0);
+                attachments.Add("users", attachmentsByUsers.ToList());
+            }
+
+            // check if any of results not returned value, then empty result
+            if (attachments.Values.Where(w => w.Count() == 0).Count() > 0) return new List<DiagramSearchModel>();
+            attachments.Values.ToList().ForEach(f =>
+            {
+                f.ToList().ForEach(d =>
+                {
+                    diagrams.Add(new DiagramSearchModel()
+                    {
+                        AttachmentId = d.attachId,
+                        DiagramName = d.Attachment.name,
+                        //SprintId = string.Join(",", us.Sprints),
+                        //SprintNumber = Convert.ToString(s.number),
+                        UserStoryName = d.UserStory.name,
+                        UserStoryId = d.UserStory.Id,
+                        Users = string.Join(",", d.UserStory.AspNetUsers.Select(user => user.UserName))
+                    });
+                });
+                
+            });
+            diagrams = diagrams.Where(w => w.UserStoryId > 0 ).Distinct(new AttachUSAndSprintComparer()).ToList();
+            return diagrams;
             
-            return attachments;
         }
 
-        public List<Attachment> FindByStoryID(int id)
+        public List<UserStoryAttachment> FindByStoryID(int id)
         {
-            return db.Attachments.Where(w => w.UserStories.Where(s => s.Id == id).Count() > 0).ToList();
+            return db.UserStoryAttachments.Where(w => w.UserStory.Id == id).ToList();
         }
 
-        public void UpdateStatus(Attachment diagram)
-        {
-            var exist = Get(diagram);
+        
 
-            exist.state = diagram.state;
-            db.SaveChanges();
-        }
-
-        public int SaveOrUpdate(Attachment diagram, string userId)
-        {
-            int id = 0;
-            if (diagram.Id > 0)
-                Update(diagram,userId);
-            else
-                id = Add(diagram, userId);
-
-            return diagram.Id > 0 ? diagram.Id : id;
-        }
-        private int Add(Attachment diagram, string userId)
+        public int Add(Attachment diagram, string userId)
         {
             diagram.created_by = userId;
             diagram.create_date = DateTime.Now;
-            diagram.state = AppConstants.DIAGRAM_STATUS_OPEN;
-
+            diagram.AttachmentHistories = null;
             Attachment attach = db.Attachments.Add(diagram);
             db.SaveChanges();
             return attach.Id;
         }
 
-        public void Update(Attachment diagram,string userId)
+        public void Update(UserStoryAttachment diagram,string userId)
         {
-            var exist = Get(diagram);
+            var exist = Get(diagram.attachId,diagram.userStoryId);
 
-            exist.name = diagram.name;
+           // exist.Attachment.name = diagram.Attachment.name;
             exist.activties = diagram.activties;
             exist.update_date = DateTime.Now;
             exist.update_by = userId;
             exist.state = diagram.state;
-            exist.UserStories = diagram.UserStories;
             db.SaveChanges();
         }
 
-        public void UpdateLock(Attachment diagram)
+        public void UpdateLock(UserStoryAttachment diagram)
         {
             try
             {
-                var exist = Get(diagram);
+                UserStoryAttachmentRepository rep = new UserStoryAttachmentRepository();
+                var exist = rep.Get(diagram);
                 if (exist.state != AppConstants.DIAGRAM_STATUS_FINISIHED)
                 {
                     exist.@readonly = diagram.@readonly;
@@ -158,37 +183,43 @@ namespace Engineer.EMF
             }
         }
 
-        public Attachment Get(Attachment diagram)
+        public UserStoryAttachment Get(int diagramId,int userStoryId)
         {
-            var exist = db.Attachments.SingleOrDefault(w => w.Id == diagram.Id && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED);
+            var exist = db.UserStoryAttachments.SingleOrDefault(w => w.attachId == diagramId && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.userStoryId == userStoryId);
             if (exist == null)
-                throw new NotExistItemException("Diagram id: " + diagram.Id + " Not exist");
+                throw new NotExistItemException("Diagram id: " + diagramId + " Not exist");
             return exist;
         }
 
-        public void SaveToHistory(Attachment diagram, string userId)
+        public UserStoryAttachment FindByIDAndUserStory(Attachment attachment , UserStory us)
+        {
+            return db.UserStoryAttachments.SingleOrDefault(w => w.attachId == attachment.Id && w.userStoryId == us.Id);
+        }
+
+        public void SaveToHistory(UserStoryAttachment diagram, string userId)
         {
             AttachmentHistory history = new AttachmentHistory()
             {
                 Graph = diagram.activties,
                 UserId = userId,
                 Date = DateTime.Now,
-                AttachId = diagram.Id
+                AttachId = diagram.attachId,
+                UserStoryId = diagram.userStoryId
             };
             db.AttachmentHistories.Add(history);
             db.SaveChanges();
         }
 
-        public List<Attachment> FindBySprintID(int sprintId)
+        public List<UserStoryAttachment> FindBySprintID(int sprintId)
         {
             SprintRepository sRepository = new SprintRepository();
             var sprint = sRepository.Get(new Sprint() { Id = sprintId });
-            var attachments = new List<Attachment>();
+            var attachments = new List<UserStoryAttachment>();
             if (sprint.UserStories.Count() > 0)
             {
                 sprint.UserStories.ToList().ForEach(us =>
                 {
-                    attachments.AddRange(us.Attachments.Except(attachments, new AttachmentComparer()));
+                    attachments.AddRange(us.UserStoryAttachments.Except(attachments, new AttachmentAndUserStoryComparer()));
                 });
             }
             return attachments;

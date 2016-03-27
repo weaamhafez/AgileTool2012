@@ -19,6 +19,7 @@ namespace Engineer.EMF
         public Project()
         {
             this.UserStories = new HashSet<UserStory>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
         public int Id { get; set; }
@@ -28,9 +29,13 @@ namespace Engineer.EMF
         public Nullable<System.DateTime> created_date { get; set; }
         public string update_by { get; set; }
         public Nullable<System.DateTime> updated_date { get; set; }
-
-        [JsonIgnore]
+        public string state { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
         public virtual ICollection<UserStory> UserStories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [JsonIgnore]
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

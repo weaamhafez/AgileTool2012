@@ -35,6 +35,7 @@ namespace Engineer.EMF
         public virtual DbSet<Sprint> Sprints { get; set; }
         public virtual DbSet<SprintHistory> SprintHistories { get; set; }
         public virtual DbSet<UserStory> UserStories { get; set; }
+        public virtual DbSet<UserStoryAttachment> UserStoryAttachments { get; set; }
         public virtual DbSet<UserStoryHistory> UserStoryHistories { get; set; }
     }
 }

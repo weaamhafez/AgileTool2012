@@ -12,9 +12,13 @@ namespace Engineer.Service
     public class SprintService
     {
         SprintRepository uRepository = new SprintRepository();
-        public List<Attachment> CloseSprint(Sprint sprint)
+        public List<Sprint> ListAll()
         {
-            var diagrams = new List<Attachment>();
+            return uRepository.ListAll();
+        }
+        public List<UserStoryAttachment> CloseSprint(Sprint sprint)
+        {
+            var diagrams = new List<UserStoryAttachment>();
             TransactionOptions _transcOptions = new TransactionOptions();
             _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
             using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
@@ -53,6 +57,11 @@ namespace Engineer.Service
                 try
                 {
                     uRepository.UpdateState(sprint);
+                    #region lock diagrams
+                    DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
+                    var diagrams = dService.FindBySprint(sprint.Id);
+                    dService.UnLockDiagrams(diagrams);
+                    #endregion
                     sc.Complete();
                 }
                 catch (Exception ex)

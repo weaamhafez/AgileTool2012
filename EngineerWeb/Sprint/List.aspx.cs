@@ -107,7 +107,7 @@ namespace EngineerWeb.Sprint
             try
             {
                 var sprintObject = Utils.ToObject<Engineer.EMF.Sprint>(sprint);
-                service.CloseSprint(sprintObject);
+                service.OpenSprint(sprintObject);
             }
             catch (BadRequestException ex)
             {

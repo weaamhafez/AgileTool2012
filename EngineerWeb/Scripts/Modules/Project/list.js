@@ -3,7 +3,34 @@
     $("#project-name").val(project["name"]);
     $("#description").val(project["description"]);
     $("#project-id").val(project["Id"]);
-    $("#projectModal").modal("show");
+    var projectJSON = { project: project["Id"] };
+    $.ajax({
+        type: "POST",
+        url: "List.aspx/GetProjectUsers",
+        data: JSON.stringify(projectJSON),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (users) {
+            if (users.d.length > 0)
+            {
+                for (var i = 0; i < users.d.length; i++)
+                {
+                    $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").attr("selected", "selected");
+                    $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").prop("selected", "selected");
+                }
+                   
+
+                $("#AspNetUsers").selectpicker('refresh')
+            }
+            $("#projectModal").modal("show");
+            return false;
+        },
+        error: function (message) {
+            errorAlert(message.responseJSON.Message);
+            return false;
+        }
+    });
+    
 };
 var formsTable;
 function removeObject($project) {
@@ -58,9 +85,21 @@ $(document).ready(function () {
         if (!$('#engineerForm').valid())
             return false;
 
+        if ($("#AspNetUsers").val() == "")
+        {
+            errorAlert("please select users");
+            return;
+        }
+
         e.preventDefault();
         var data = {};
-        $("#project_div :input").serializeArray().map(function (x) { data[x.name] = x.value; });
+        $("#project_div :input").serializeArray().map(function (x) {
+            if (x.name.indexOf("AspNetUsers") > -1) x.name = "AspNetUsers";
+            if (data[x.name] != null)
+                data[x.name] += "," + x.value;
+            else
+                data[x.name] = x.value;
+        });
         var params = { "project": data };
         var $btn = $(this).button('loading');
         $.ajax({
@@ -83,9 +122,13 @@ $(document).ready(function () {
         });
         return false;
     });
-
     $('#renameModal').on('shown.bs.modal', function () {
         $('#renameModal').find("input[type=text]").val("");
     });
     $("#dialogNameTitle").text($("#diagram-name").val() == "" ? "Untitled" : $("#diagram-name").val());
+
+    $('#projectModal').on('hidden.bs.modal', function () {
+        $('#project_div').find("input[type=text],input[type=hidden],select,textarea").val("");
+        $('#project_div').find(".selectpicker").selectpicker('refresh');
+    });
 });

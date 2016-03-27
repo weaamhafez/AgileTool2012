@@ -23,7 +23,7 @@ namespace EngineerWeb.Diagram
             {
                 BindDataToUserStory();
                 if (!string.IsNullOrEmpty(Request.Params["Id"]))
-                    LoadDiagram(Request.Params["Id"]);
+                    LoadDiagram(Request.Params["Id"], Request.Params["UserStoryId"]);
 
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("interactions"))
@@ -62,43 +62,49 @@ namespace EngineerWeb.Diagram
             UserStoriesList.DataBind();
         }
 
-        private void LoadDiagram(string id)
+        private void LoadDiagram(string id,string userStoryId)
         {
             if(!string.IsNullOrEmpty(id))
             {
-                var diagram = service.FindByID(int.Parse(id));
-                diagramID.Value = diagram.Id.ToString();
-                diagramName.Text = diagram.name;
+                var diagram = service.FindByIDAndUserStory(int.Parse(id),int.Parse(userStoryId));
+                diagramID.Value = diagram.attachId.ToString();
+                diagramName.Text = diagram.Attachment.name;
                 diagramGraph.Value = diagram.activties;
-
-                if(diagram.UserStories != null && diagram.UserStories.ToList() != null)
-                {
-                    diagram.UserStories.ToList().ForEach(f =>
-                    {
-                        var item = UserStoriesList.Items.FindByValue(f.Id.ToString());
-                        if (item != null)
-                            item.Selected = true;
-                    });
-                }
+                UserStoryID.Value = userStoryId;
+                UserStoriesList.Visible = false;
             }
         }
 
         [System.Web.Services.WebMethod]
         [ScriptMethod(UseHttpGet = false)]
-        public static string SaveOrUpdate(IDictionary<string, object> diagram)
+        public static void Save(IDictionary<string, object> diagram)
         {
             var diagramObject =new Attachment() { name = diagram["name"].ToString()};
 
-            if (diagram.ContainsKey("Id") && !string.IsNullOrEmpty(diagram["Id"].ToString()))
-                diagramObject.Id = int.Parse(diagram["Id"].ToString());
 
             string[] userStoriesIds = diagram.ContainsKey("userStories") ? 
                 ((object[])diagram["userStories"]).Where(w=>w != null).Select(s=>s.ToString()).ToArray()
                 : null;
             string graph = diagram.ContainsKey("graph") ? diagram["graph"].ToString() : null;
             string svg = diagram.ContainsKey("svg") ? diagram["svg"].ToString() : null;
-            diagramObject.SVG = svg;
-            return service.SaveOrUpdate(diagramObject,userStoriesIds,graph, new New().GetUserId()).ToString();
+            service.Add(diagramObject,userStoriesIds,graph, new New().GetUserId(), svg).ToString();
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false)]
+        public static void Update(IDictionary<string, object> diagram)
+        {
+            var diagramObject = new UserStoryAttachment();
+
+            if (diagram.ContainsKey("Id") && !string.IsNullOrEmpty(diagram["Id"].ToString()))
+                diagramObject.attachId = int.Parse(diagram["Id"].ToString());
+
+            if (diagram.ContainsKey("userStoryId") && !string.IsNullOrEmpty(diagram["userStoryId"].ToString()))
+                diagramObject.userStoryId = int.Parse(diagram["userStoryId"].ToString());
+
+            string graph = diagram.ContainsKey("graph") ? diagram["graph"].ToString() : null;
+            string svg = diagram.ContainsKey("svg") ? diagram["svg"].ToString() : null;
+            service.Update(diagramObject,  graph, new New().GetUserId(), svg).ToString();
         }
 
         private string GetUserId()

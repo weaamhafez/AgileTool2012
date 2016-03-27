@@ -1,14 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Form.aspx.cs" Inherits="EngineerWeb.Search.Diagram.Form" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <div class="panel-body" id="searchDiv">
+    <div class="panel-body form-horizontal" id="searchDiv">
             <div class="form-group">
-			    <label for="Users" class="col-md-2 control-label">Select Sprint</label>
+			    <label for="Sprint" class="col-md-2 control-label">Select Sprint</label>
 			    <div class="col-md-5">
 			        <asp:ListBox CssClass="selectpicker" ClientIDMode="Static" ID="Sprint" runat="server" DataTextField="number" DataValueField="Id" data-live-search="true" />
 			    </div>
 		    </div>
             <div class="form-group">
-			    <label for="Users" class="col-md-2 control-label">Diagram</label>
+			    <label for="Users" class="col-md-2 control-label">Diagram Name</label>
 			    <div class="col-md-5">
                      <asp:TextBox CssClass="form-input" runat="server" ID="DiagramName" ClientIDMode="Static"></asp:TextBox>
 			    </div>
@@ -37,10 +37,16 @@
                         <thead>
                         <tr>
                             <th style="width: 30%">
-                                Name
+                                Diagram Name
                             </th>
                             <th style="width: 30%">
-                                Locked
+                                User Story
+                            </th>
+                             <%--<th style="width: 30%">
+                                Sprint
+                            </th>--%>
+                             <th style="width: 30%">
+                                Users
                             </th>
                         </tr>
                         </thead>

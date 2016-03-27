@@ -53,6 +53,18 @@ namespace Engineer.EMF
             db.SaveChanges();
         }
 
+        public List<UserStory> FindBySprint(int sprintId)
+        {
+            var result = new List<UserStory>();
+            var sprints = db.Sprints.Where(w => w.Id == sprintId && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED);
+            sprints.ToList().ForEach(f =>
+            {
+                result.AddRange(f.UserStories);
+            }
+            );
+            return result.Distinct(new UserStoryComparer()).ToList();
+        }
+
         public void Update(UserStory story)
         {
             var exist = Get(story);
@@ -113,7 +125,7 @@ namespace Engineer.EMF
 
         public List<UserStory> FindByDiagramID(int diagramId)
         {
-            return db.UserStories.Where(w => w.Attachments.Where(attach => attach.Id == diagramId).Count() > 0).ToList();
+            return db.UserStories.Where(w => w.UserStoryAttachments.Where(attach => attach.attachId == diagramId).Count() > 0).ToList();
         }
 
         public List<UserStory> ListAll()

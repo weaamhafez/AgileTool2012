@@ -47,6 +47,10 @@ namespace Engineer.Service
                 
         }
 
+        public List<UserStory> FindBySprint(int sprintId)
+        {
+            return uRepository.FindBySprint(sprintId);
+        }
         public List<UserStory> FindByUser(string userId)
         {
             return uRepository.FindByUser(userId);
@@ -106,19 +110,43 @@ namespace Engineer.Service
 
         public void Delete(UserStory userStory)
         {
-            try
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
             {
-                userStory.state = AppConstants.USERSTORY_STATUS_DELETED;
-                uRepository.UpdateState(userStory);
+                try
+                {
+                    userStory.state = AppConstants.USERSTORY_STATUS_DELETED;
+                    var exist = uRepository.Get(userStory);
+                    uRepository.UpdateState(userStory);
+
+                    #region all diagrams should be deleted
+                    if (exist != null)
+                    {
+                        exist.UserStoryAttachments.ToList().ForEach(d =>
+                        {
+                            UserStoryAttachmentRepository dR = new UserStoryAttachmentRepository();
+                            exist.state = AppConstants.DIAGRAM_STATUS_FINISIHED;
+                            dR.UpdateStatus(d);
+                        });
+                    }
+                    #endregion
+                    sc.Complete();
+                }
+                catch (BadRequestException e)
+                {
+                    throw new Exception(e.ErrorMessage);
+                }
+                catch (NotExistItemException e)
+                {
+                    throw new Exception(e.ErrorMessage);
+                }
+                finally
+                {
+                    sc.Dispose();
+                }
             }
-            catch (BadRequestException e)
-            {
-                throw new Exception(e.ErrorMessage);
-            }
-            catch (NotExistItemException e)
-            {
-                throw new Exception(e.ErrorMessage);
-            }
+                
         }
 
         public List<UserStory> FindByDiagramID(int diagramId)

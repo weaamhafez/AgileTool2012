@@ -47,7 +47,7 @@ namespace EngineerWeb.Diagram
         {
             try
             {
-                service.Delete(Utils.ToObject<Engineer.EMF.Attachment>(diagram));
+                service.Delete(Utils.ToObject<Engineer.EMF.UserStoryAttachment>(diagram));
             }
             catch (BadRequestException e)
             {

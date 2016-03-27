@@ -78,7 +78,6 @@ $(document).ready(function () {
                 data[x.name] += "," + x.value;
             else
                 data[x.name] = x.value;
-            data[x.name] = x.value;
         });
         var params = { "story": data };
         var $btn = $(this).button('loading');

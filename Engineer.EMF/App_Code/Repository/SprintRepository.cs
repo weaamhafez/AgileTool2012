@@ -34,6 +34,11 @@ namespace Engineer.EMF
             return sprints;
         }
 
+        public List<Sprint> ListAll()
+        {
+            return db.Sprints.ToList();
+        }
+
         public void SaveOrUpdate(Sprint sprint, string userId)
         {
             if (sprint.Id > 0)

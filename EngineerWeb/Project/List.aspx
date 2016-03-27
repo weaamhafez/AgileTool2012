@@ -45,6 +45,12 @@
                                         <textarea class="form-control" id="description" name="description" style="width:280px!important"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="description" class="col-md-3 control-label">Users</label>
+                                    <div class="col-md-8">
+                                        <asp:ListBox CssClass="selectpicker" ClientIDMode="Static" ID="AspNetUsers" runat="server" DataTextField="UserName" DataValueField="Id" SelectionMode="Multiple" data-live-search="true"/>
+                                    </div>
+                                </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

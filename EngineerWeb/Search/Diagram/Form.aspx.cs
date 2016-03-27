@@ -1,4 +1,5 @@
 ﻿using Engineer.EMF;
+using Engineer.EMF.Models;
 using Engineer.EMF.Utils.Exceptions;
 using Engineer.Service;
 using EngineerWeb.Project;
@@ -49,7 +50,7 @@ namespace EngineerWeb.Search.Diagram
                 if (usersAndStory.Keys.Contains("DiagramName"))
                     diagramName = usersAndStory["DiagramName"].ToString();
 
-                List<Attachment> attachments = service.FindByUsersAndStories(users,stories,sprint,diagramName);
+                List<DiagramSearchModel> attachments = service.FindByUsersAndStories(users,stories,sprint,diagramName);
                 return Utils.SerializeObject(attachments);
             }
             catch (BadRequestException ex)
@@ -69,8 +70,16 @@ namespace EngineerWeb.Search.Diagram
             Users.DataBind();
 
             UserStoryService userStoryService = (UserStoryService)new ServiceLocator<UserStory>().locate();
-            Stories.DataSource = userStoryService.ListAll();
+            var stories = userStoryService.ListAll();
+            stories.Insert(0, new UserStory());
+            Stories.DataSource = stories;
             Stories.DataBind();
+
+            SprintService sprintService = (SprintService)new ServiceLocator<Engineer.EMF.Sprint>().locate();
+            var sprints = sprintService.ListAll();
+            sprints.Insert(0, new Engineer.EMF.Sprint());
+            Sprint.DataSource = sprints;
+            Sprint.DataBind();
         }
     }
 }
