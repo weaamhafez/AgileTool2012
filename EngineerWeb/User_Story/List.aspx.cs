@@ -76,6 +76,14 @@ namespace EngineerWeb.User_Story
                 throw new Exception(e.ErrorMessage);
             }
         }
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static object FindDiagramsByStory(IDictionary<string, object> story)
+        {
+            DiagramService service = (DiagramService)new ServiceLocator<Attachment>().locate();
+            var diagrams = service.FindByStoryID(int.Parse(story["Id"].ToString()));
+            return Utils.SerializeObject(diagrams);
+        }
 
         private void BindData()
         {

@@ -4,7 +4,31 @@
     $("#topic").val(sprint["topic"]);
     $("#sprint-id").val(sprint["Id"]);
     $("#state").val(sprint["state"]);
-    $("#projectModal").modal("show");
+    var sprintJSON = { sprint: sprint["Id"] };
+    $.ajax({
+        type: "POST",
+        url: "List.aspx/GetSprintStories",
+        data: JSON.stringify(sprintJSON),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (stories) {
+            if (stories.d.length > 0) {
+                for (var i = 0; i < stories.d.length; i++) {
+                    $("#UserStories option[value=\"" + (stories.d)[i].Id + "\"]").attr("selected", "selected");
+                    $("#UserStories option[value=\"" + (stories.d)[i].Id + "\"]").prop("selected", "selected");
+                }
+
+
+                $("#UserStories").selectpicker('refresh')
+            }
+            $("#projectModal").modal("show");
+            return false;
+        },
+        error: function (message) {
+            errorAlert(message.responseJSON.Message);
+            return false;
+        }
+    });
 };
 var formsTable;
 function removeObject($project, action) {

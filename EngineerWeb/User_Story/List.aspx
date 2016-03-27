@@ -69,10 +69,43 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="removeModalLabel">Confirm Delete Story</h4>
+                        </div>
+                        
+                        <div class="modal-body" id="delete_div">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <table id="userStoriesTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 20%">
+                                                Name
+                                            </th>
+                                            <th style="width: 30%">
+                                                Locked
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button data-loading-text="Deleting..." id="deleteBtn" type="button" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     <script type="text/javascript">
         var datatableURL = '<%=ResolveUrl("List.aspx/GetAllStories")%>';
         var saveOrUpdateURL = '<%=ResolveUrl("List.aspx/SaveOrUpdate")%>';
         var deleteURL = '<%=ResolveUrl("List.aspx/Delete")%>';
         var finishURL = '<%=ResolveUrl("List.aspx/Finish")%>';
+        var loadDiagramsURL = '<%=ResolveUrl("List.aspx/FindDiagramsByStory")%>';
     </script>
 </asp:Content>

@@ -136,6 +136,17 @@ namespace EngineerWeb.Sprint
             }
         }
 
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static object GetSprintStories(string sprint)
+        {
+            UserStoryService uService = (UserStoryService)new ServiceLocator<Engineer.EMF.UserStory>().locate();
+            var stories = uService.FindBySprint(int.Parse(sprint));
+            JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            var prjs = JsonConvert.SerializeObject(stories, Formatting.Indented, jss);
+            return new JavaScriptSerializer().Deserialize(prjs, typeof(object));
+        }
+
         private void BindData()
         {
             try

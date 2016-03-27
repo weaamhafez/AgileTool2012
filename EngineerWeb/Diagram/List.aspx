@@ -11,8 +11,11 @@
                             <th style="width: 30%">
                                 Name
                             </th>
-                            <th style="width: 30%">
+                            <th style="width: 5%">
                                 Locked
+                            </th>
+                            <th style="width: 35%">
+                                User Story
                             </th>
                             <th style="width: 30%">
                                 Action

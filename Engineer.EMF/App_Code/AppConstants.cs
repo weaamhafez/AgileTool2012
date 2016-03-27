@@ -27,5 +27,7 @@ namespace Engineer.EMF
         public static string EXCEPTION_USER_STORY_CANNOT_FIND = "Cannot find user story with this id";
         public static string EXCEPTION_SPRINT_CLOSE_ERROR = "Cannot Close sprint";
         public static string PROJECT_STATUS_DELETED = "DELETED";
+
+        public static readonly string DIAGRAM_STATUS_CLOSED = "CLOSED";
     }
 }

@@ -66,6 +66,9 @@ $(document).ready(function () {
                 }
             },
             {
+                "data": "UserStory.name"
+            },
+            {
                 "data": "Attachment.name",
                 "render": function (data, type, full, meta) {
                     return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' +
