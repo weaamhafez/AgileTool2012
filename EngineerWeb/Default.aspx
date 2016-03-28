@@ -2,7 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
-    <asp:LoginView runat="server" ViewStateMode="Disabled">
+    <asp:LoginView runat="server" ViewStateMode="Enabled">
                 <RoleGroups>
                     <asp:RoleGroup Roles="Admin">
                         <ContentTemplate>
