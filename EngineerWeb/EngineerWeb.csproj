@@ -197,6 +197,7 @@
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
+    <Content Include="App_Data\dbo.AspNetRoles.data.sql" />
     <Content Include="App_Data\Mail.xml" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-select.css" />
