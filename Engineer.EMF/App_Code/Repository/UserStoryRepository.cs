@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Engineer.EMF.Models;
 
 namespace Engineer.EMF
 {
@@ -131,6 +132,19 @@ namespace Engineer.EMF
         public List<UserStory> ListAll()
         {
             return db.UserStories.Where(w => w.state != AppConstants.USERSTORY_STATUS_DELETED).ToList();
+        }
+
+        public UserStoryData FindProjectAndUsers(int storyId)
+        {
+            var story = db.UserStories.SingleOrDefault(w => w.Id == storyId);
+            var userStoryAndData = new UserStoryData();
+            if(story != null)
+            {
+                userStoryAndData.ProjectId = story.projectId.ToString();
+                userStoryAndData.Users = story.AspNetUsers.Select(s => s.Id).ToList();
+            }
+
+            return userStoryAndData;
         }
     }
 }

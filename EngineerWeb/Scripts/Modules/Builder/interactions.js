@@ -158,7 +158,18 @@ function loadGraph()
             });
         }
         graph = graph.fromJSON(graphJSON);
-        rect = graph.attributes.cells.models[graph.attributes.cells.models.length - 2];
+        if (graph.attributes.cells.models.length > 0)
+        {
+            for(var i=graph.attributes.cells.models.length - 1;i>=0;i--)
+            {
+                if (graph.attributes.cells.models[i].attributes.type == "basic.Rect")
+                {
+                    rect = graph.attributes.cells.models[i];
+                    break;
+                }
+                    
+            }
+        }
 
         $("#renameMenu").hide();
     }

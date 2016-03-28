@@ -59,6 +59,7 @@
     <Compile Include="App_Code\Exceptions\BadRequestException.cs" />
     <Compile Include="App_Code\Models\DataTableResult.cs" />
     <Compile Include="App_Code\Models\DiagramSearchModel.cs" />
+    <Compile Include="App_Code\Models\UserStoryData.cs" />
     <Compile Include="App_Code\Repository\BaseRepository.cs" />
     <Compile Include="App_Code\Repository\RepositoryLocator.cs" />
     <Compile Include="App_Code\Exceptions\NotExistItemException.cs" />

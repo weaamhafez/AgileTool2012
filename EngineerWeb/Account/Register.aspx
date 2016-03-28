@@ -5,6 +5,9 @@
     <p class="text-danger">
         <asp:Literal runat="server" ID="ErrorMessage" />
     </p>
+    <p class="text-success">
+        <asp:Literal runat="server" ID="SuccessMessage" />
+    </p>
 
     <div class="form-horizontal">
         <h4>Create a new account</h4>
@@ -46,7 +49,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" CssClass="btn btn-default" />
+                <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" CssClass="btn btn-default" ID="UserAddBtn" />
             </div>
         </div>
     </div>

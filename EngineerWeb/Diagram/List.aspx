@@ -67,5 +67,7 @@
         var datatableURL = '<%=ResolveUrl("List.aspx/GetAllDiagrams")%>';
         var deleteURL = '<%=ResolveUrl("List.aspx/Delete")%>';
         var loadUserStoriesURL = '<%=ResolveUrl("List.aspx/FindStoriesByDiagram")%>';
+        var openURL = '<%=ResolveUrl("List.aspx/Open")%>';
+        var closeURL = '<%=ResolveUrl("List.aspx/Close")%>';
     </script>
 </asp:Content>

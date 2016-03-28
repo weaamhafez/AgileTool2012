@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net.Configuration;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Text;
@@ -138,10 +139,12 @@ namespace Engineer.Service
             SmtpClient client = new SmtpClient();
 
             // Add credentials
-            client.UseDefaultCredentials = true;
-            //client.Host = ConfigurationManager.AppSettings["SMTP"];
-            //client.Credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["FROMEMAIL"], ConfigurationManager.AppSettings["FROMPWD"]);
-            //client.EnableSsl = true;    
+            var section = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            client.UseDefaultCredentials = section.Network.DefaultCredentials;
+            //client.Host = section.Network.Host;
+            //client.Credentials = new System.Net.NetworkCredential(section.Network.UserName, section.Network.Password);
+            //client.EnableSsl = section.Network.EnableSsl;
+            //client.Port = section.Network.Port;
 
             // send message
             client.Send(message);
@@ -153,10 +156,13 @@ namespace Engineer.Service
 
             StringBuilder formatedMsg = new StringBuilder(message);
             String result;
-            for (int i = 0; i < messageArgs.Length; i++)
+            if(messageArgs != null)
             {
-                result = Regex.Replace(formatedMsg.ToString(), @"\{" + i + @"\}", messageArgs[i]);
-                formatedMsg = new StringBuilder(result);
+                for (int i = 0; i < messageArgs.Length; i++)
+                {
+                    result = Regex.Replace(formatedMsg.ToString(), @"\{" + i + @"\}", messageArgs[i]);
+                    formatedMsg = new StringBuilder(result);
+                }
             }
             return formatedMsg.ToString();
 

@@ -107,5 +107,6 @@
         var deleteURL = '<%=ResolveUrl("List.aspx/Delete")%>';
         var finishURL = '<%=ResolveUrl("List.aspx/Finish")%>';
         var loadDiagramsURL = '<%=ResolveUrl("List.aspx/FindDiagramsByStory")%>';
+        var openURL = '<%=ResolveUrl("List.aspx/Open")%>';
     </script>
 </asp:Content>

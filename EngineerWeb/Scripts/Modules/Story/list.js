@@ -4,6 +4,34 @@
     $("#description").val(story["description"]);
     $("#story-id").val(story["Id"]);
     $("#state").val(story["state"]);
+    var storyJSON = { story: story["Id"] };
+    $.ajax({
+        type: "POST",
+        url: "List.aspx/GetStoryData",
+        data: JSON.stringify(storyJSON),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (stories) {
+            if (stories.d) {
+                $("#projectId option[value=\"" + stories.d.ProjectId + "\"]").attr("selected", "selected");
+                $("#projectId option[value=\"" + stories.d.ProjectId + "\"]").prop("selected", "selected");
+                for (var i = 0; i < stories.d.Users.length; i++) {
+                    $("#AspNetUsers option[value=\"" + (stories.d.Users)[i] + "\"]").attr("selected", "selected");
+                    $("#AspNetUsers option[value=\"" + (stories.d.Users)[i] + "\"]").prop("selected", "selected");
+                }
+
+
+                $("#projectId").selectpicker('refresh');
+                $("#AspNetUsers").selectpicker('refresh');
+            }
+            $("#projectModal").modal("show");
+            return false;
+        },
+        error: function (message) {
+            errorAlert(message.responseJSON.Message);
+            return false;
+        }
+    });
     $("#projectModal").modal("show");
 };
 var userStoriesTable;
@@ -50,7 +78,7 @@ function removeObject($project,action) {
         if (result) {
             $.ajax({
                 type: "POST",
-                url: finishURL,
+                url: action == "finish" ? finishURL : openURL,
                 data: JSON.stringify(params),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -98,7 +126,7 @@ $(document).ready(function () {
                 "render": function (data, type, full, meta) {
                     return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>' +
                         '<ul class="dropdown-menu"><li><a href="javascript:void(0)" onclick="openUpdateDialog(this)" data-story="' + encodeURI(JSON.stringify(full)) + '">Update</a></li><li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="openRemoveDialog(this)">Delete</a></li>' +
-                        (full.state != 'DONE' ? '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="removeObject(this,\'finish\')">Finish Story</a></li>' : '') + '</ul></div>';
+                        (full.state != 'DONE' ? '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="removeObject(this,\'finish\')">Finish Story</a></li>' : '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="removeObject(this,\'open\')">Open</a></li>') + '</ul></div>';
                 }
             }
         ]
@@ -131,6 +159,15 @@ $(document).ready(function () {
 
         //TODO validate
         e.preventDefault();
+        if ($("#AspNetUsers").val() == "")
+        {
+            errorAlert("Please select at least one user");
+            return;
+        }
+        if ($("#projectId").val() == "") {
+            errorAlert("Please select at least one user");
+            return;
+        }
         var data = {};
         $("#project_div :input").serializeArray().map(function (x) {
             if (x.name.indexOf("projectId") > -1) x.name = "projectId";

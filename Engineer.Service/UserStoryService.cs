@@ -1,4 +1,5 @@
 ﻿using Engineer.EMF;
+using Engineer.EMF.Models;
 using Engineer.EMF.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -101,6 +102,43 @@ namespace Engineer.Service
                 }
             }
                 
+        }
+
+        public void OpenStory(UserStory story, string userId)
+        {
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
+            {
+                try
+                {
+                    story.state = AppConstants.USERSTORY_STATUS_OPEN;
+                    uRepository.UpdateState(story);
+
+                    #region Save to history
+                    uRepository.SaveToHistory(story, userId);
+                    #endregion
+                    #region lock diagrams
+                    DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
+                    var diagrams = dService.FindByUserStory(story.Id);
+                    dService.UnLockDiagrams(diagrams);
+                    #endregion
+                    sc.Complete();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(AppConstants.EXCEPTION_GLOBAL);
+                }
+                finally
+                {
+                    sc.Dispose();
+                }
+            }
+        }
+
+        public UserStoryData FindProjectAndUsers(int storyId)
+        {
+            return uRepository.FindProjectAndUsers(storyId);
         }
 
         public List<UserStory> ListAll()

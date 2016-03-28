@@ -371,7 +371,6 @@
     <Content Include="Site.Master" />
     <Content Include="Project\List.aspx" />
     <Content Include="Sprint\List.aspx" />
-    <Content Include="Sprint\New.aspx" />
     <Content Include="Unauthorized.aspx" />
     <Content Include="User_Story\List.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -588,13 +587,6 @@
     </Compile>
     <Compile Include="Sprint\List.aspx.designer.cs">
       <DependentUpon>List.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Sprint\New.aspx.cs">
-      <DependentUpon>New.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Sprint\New.aspx.designer.cs">
-      <DependentUpon>New.aspx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="Unauthorized.aspx.cs">

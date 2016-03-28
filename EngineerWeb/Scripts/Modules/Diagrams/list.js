@@ -35,6 +35,30 @@ function openRemoveDialog($project) {
     });
     $("#removeModal").modal("show");
 };
+function diagramAction($diagram,action)
+{
+    var params = { "diagram": { attachId: $($diagram).data("id"), userStoryId: $($diagram).data("userstoryid") } };
+    bootbox.confirm("Are you sure?", function (result) {
+        if (result) {
+            $.ajax({
+                type: "POST",
+                url: action == "Open" ? openURL : closeURL,
+                data: JSON.stringify(params),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    successAlert("Success", "Request Success");
+                    formsTable.ajax.reload();
+                    return false;
+                },
+                error: function (message) {
+                    errorAlert(message.responseJSON.Message);
+                    return false;
+                }
+            });
+        }
+    });
+}
 function openView($diagram)
 {
     window.location.href = "View?id=" + $($diagram).data("id");
@@ -73,7 +97,7 @@ $(document).ready(function () {
                 "render": function (data, type, full, meta) {
                     return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' +
                         (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' : ' ') +
-                        //(full.readonly ? '<li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="openView(this)">View as image</a></li>' : ' ') +
+                        (full.state == "CLOSED" ? '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Open\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Open</a></li>' : '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Close\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Close</a></li>') +
                         '</ul></div>';
                 }
             }

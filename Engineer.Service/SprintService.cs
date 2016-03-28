@@ -57,7 +57,7 @@ namespace Engineer.Service
                 try
                 {
                     uRepository.UpdateState(sprint);
-                    #region lock diagrams
+                    #region unlock diagrams
                     DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
                     var diagrams = dService.FindBySprint(sprint.Id);
                     dService.UnLockDiagrams(diagrams);

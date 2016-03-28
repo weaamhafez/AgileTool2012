@@ -153,16 +153,29 @@ namespace Engineer.EMF
             return attach.Id;
         }
 
-        public void Update(UserStoryAttachment diagram,string userId)
+        public List<UserStoryAttachment> Update(UserStoryAttachment diagram,string userId)
         {
-            var exist = Get(diagram.attachId,diagram.userStoryId);
-
-           // exist.Attachment.name = diagram.Attachment.name;
-            exist.activties = diagram.activties;
-            exist.update_date = DateTime.Now;
-            exist.update_by = userId;
-            exist.state = diagram.state;
+            //var exist = Get(diagram.attachId,diagram.userStoryId);
+            var openDiagrams = GetAllOpenById(diagram.attachId);
+            if(openDiagrams != null)
+            {
+                openDiagrams.ForEach(exist =>
+                {
+                    exist.activties = diagram.activties;
+                    exist.update_date = DateTime.Now;
+                    exist.update_by = userId;
+                    exist.state = diagram.state;
+                    exist.SVG = diagram.SVG;
+                });
+            }
             db.SaveChanges();
+            return openDiagrams;
+        }
+
+        private List<UserStoryAttachment> GetAllOpenById(int diagramId)
+        {
+            return db.UserStoryAttachments.Where(w => w.attachId == diagramId && w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.state != AppConstants.DIAGRAM_STATUS_CLOSED
+           ).Where(locked => locked.@readonly == null || locked.@readonly == false).ToList();
         }
 
         public void UpdateLock(UserStoryAttachment diagram)

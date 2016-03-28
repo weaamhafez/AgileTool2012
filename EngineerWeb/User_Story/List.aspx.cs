@@ -61,6 +61,14 @@ namespace EngineerWeb.User_Story
 
         [System.Web.Services.WebMethod]
         [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static void Open(IDictionary<string, object> story)
+        {
+            var storyObject = Utils.ToObject<Engineer.EMF.UserStory>(story);
+            service.OpenStory(storyObject, new List().GetUserId());
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
         public static void Delete(IDictionary<string, object> story)
         {
             try
@@ -83,6 +91,17 @@ namespace EngineerWeb.User_Story
             DiagramService service = (DiagramService)new ServiceLocator<Attachment>().locate();
             var diagrams = service.FindByStoryID(int.Parse(story["Id"].ToString()));
             return Utils.SerializeObject(diagrams);
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static object GetStoryData(string story)
+        {
+            UserStoryService uService = (UserStoryService)new ServiceLocator<Engineer.EMF.UserStory>().locate();
+            var userStoryData = uService.FindProjectAndUsers(int.Parse(story));
+            JsonSerializerSettings jss = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            var prjs = JsonConvert.SerializeObject(userStoryData, Formatting.Indented, jss);
+            return new JavaScriptSerializer().Deserialize(prjs, typeof(object));
         }
 
         private void BindData()

@@ -115,25 +115,82 @@ namespace Engineer.Service
 
         }
 
-        public int Update(UserStoryAttachment diagramObject, string graph, string userId, string svg)
+        public void Open(UserStoryAttachment diagramObject, string userId)
         {
-            int id = 0;
             TransactionOptions _transcOptions = new TransactionOptions();
             _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
             using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
             {
                 try
                 {
-                    #region adding user stories
+                    #region lock
+                    var diagrams = new List<UserStoryAttachment>();
+                    diagrams.Add(diagramObject);
+                    UnLockDiagrams(diagrams);
+                    #endregion
+
+                    diagramObject.state = AppConstants.DIAGRAM_STATUS_OPEN;
+                    rep.UpdateStatus(diagramObject);
+                    sc.Complete();
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(AppConstants.EXCEPTION_GLOBAL);
+                }
+                finally
+                {
+                    sc.Dispose();
+                }
+            }
+        }
+
+        public void Close(UserStoryAttachment diagramObject, string userId)
+        {
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
+            {
+                try
+                {
+                    #region lock
+                    var diagrams = new List<UserStoryAttachment>();
+                    diagrams.Add(diagramObject);
+                    LockDiagrams(diagrams);
+                    #endregion
+
+                    diagramObject.state = AppConstants.DIAGRAM_STATUS_CLOSED;
+                    rep.UpdateStatus(diagramObject);
+
+                    sc.Complete();
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(AppConstants.EXCEPTION_GLOBAL);
+                }
+                finally
+                {
+                    sc.Dispose();
+                }
+            }
+        }
+        public int Update(UserStoryAttachment diagramObject, string graph, string userId, string svg)
+        {
+            int id = 0;
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            List<UserStoryAttachment> openDiagrams = new List<UserStoryAttachment>();
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
+            {
+                
+                try
+                {
                     diagramObject.activties = graph;
                     diagramObject.SVG = svg;
                     diagramObject.state = AppConstants.DIAGRAM_STATUS_OPEN;
 
-
-                    repository.Update(diagramObject, userId);
-                    repository.SaveToHistory(diagramObject, userId);
-                    #endregion
-
+                    openDiagrams = repository.Update(diagramObject, userId);
                     sc.Complete();
                 }
                 catch (Exception ex)
@@ -147,16 +204,20 @@ namespace Engineer.Service
 
             }
             #region send email notification in case diagram updated
-            try
-            {
-                    SendUpdateEmail(diagramObject, userId);
-            }
-            catch (Exception ex)
-            {
-
-
-                Console.WriteLine("Cannot send email: " + ex.Message);
-            }
+                openDiagrams.ForEach(diagram =>
+                {
+                    repository.SaveToHistory(diagram, userId);
+                    try
+                    {
+                        SendUpdateEmail(diagram, userId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Cannot send email" + ex.Message);
+                    }
+                });
+           
+            
             #endregion
             return id;
 
@@ -173,8 +234,8 @@ namespace Engineer.Service
             var actionUser = uRepositorty.FindById(userId);
             diagramObject.UserStory.AspNetUsers.ToList().ForEach(f =>
             {
-                string messageSubject = MailService.formatMsg(message.Subject, new string[] { diagramObject.attachId.ToString() });
-                string bodyStr = MailService.formatMsg(message.Body, new string[] { diagramObject.attachId.ToString(), f.UserName, actionUser.UserName });
+                string messageSubject = MailService.formatMsg(message.Subject, new string[] { diagramObject.Attachment.name.ToString() });
+                string bodyStr = MailService.formatMsg(message.Body, new string[] { diagramObject.Attachment.name.ToString(), f.UserName, actionUser.UserName,diagramObject.UserStory.name });
                 MailService.SendMessageWithAttachment(sendFrom, f.Email, null, messageSubject, bodyStr, null);
             });
         }
@@ -190,6 +251,8 @@ namespace Engineer.Service
             {
                 attach.@readonly = true;
                 repository.UpdateLock(attach);
+                attach.state = AppConstants.DIAGRAM_STATUS_CLOSED;
+                rep.UpdateStatus(attach);
             }
         }
 
@@ -199,6 +262,8 @@ namespace Engineer.Service
             {
                 attach.@readonly = false;
                 repository.UpdateLock(attach);
+                attach.state = AppConstants.DIAGRAM_STATUS_OPEN;
+                rep.UpdateStatus(attach);
             }
         }
 

@@ -67,5 +67,21 @@ namespace EngineerWeb.Diagram
             var diagrams = service.FindByDiagramID(int.Parse(diagram["Id"].ToString()));
             return Utils.SerializeObject(diagrams);
         }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static void Open(IDictionary<string, object> diagram)
+        {
+            var diagramObject = Utils.ToObject<Engineer.EMF.UserStoryAttachment>(diagram);
+            service.Open(diagramObject, new List().GetUserId());
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static void Close(IDictionary<string, object> diagram)
+        {
+            var diagramObject = Utils.ToObject<Engineer.EMF.UserStoryAttachment>(diagram);
+            service.Close(diagramObject, new List().GetUserId());
+        }
     }
 }
