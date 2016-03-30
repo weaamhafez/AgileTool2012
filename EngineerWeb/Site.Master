@@ -20,7 +20,7 @@
         <asp:ScriptManager runat="server">
             <Scripts>
                 <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" Path="~/Scripts/jquery-1.11.1.min.js" />
+                <asp:ScriptReference Path="~/Scripts/jquery-1.11.1.min.js" />
                 <asp:ScriptReference Path="~/Scripts/jquery-ui/jquery-ui.min.js" />
                 <asp:ScriptReference Path="~/Scripts/jquery.validate.js" />
                 <asp:ScriptReference Path="~/Scripts/jAlert-v3.js" />
