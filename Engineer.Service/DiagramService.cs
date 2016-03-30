@@ -35,6 +35,31 @@ namespace Engineer.Service
             }
         }
 
+        public AttachmentHistory FindHistoryByIDAndUserStory(int historyId)
+        {
+            try
+            {
+                return rep.GetHistory(historyId);
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException(AppConstants.EXCEPTION_RETREIVE_DIAGRAMS);
+            }
+        }
+
+        public List<AttachmentHistory> FindHistory(UserStoryAttachment diagramObject)
+        {
+            try
+            {
+                return repository.FindDiagramHistory(diagramObject);
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException(AppConstants.EXCEPTION_RETREIVE_DIAGRAM_HISTORY);
+            }
+            
+        }
+
         public List<UserStoryAttachment> FindByUsers(string[] users)
         {
             return repository.FindByUsers(users);
@@ -90,7 +115,7 @@ namespace Engineer.Service
                                 UserStory = userStory,
                                 activties = graph,
                                 SVG = svg,
-                                state = AppConstants.DIAGRAM_STATUS_OPEN
+                                state = AppConstants.DIAGRAM_STATUS_OPEN,
                             });
                         }
                     }
@@ -98,7 +123,12 @@ namespace Engineer.Service
                     id  = repository.Add(diagramObject, userId);
                     diagramObject.Id = id;
                     #endregion
-
+                    #region save to history
+                    diagramObject.UserStoryAttachments.ToList().ForEach(f =>
+                    {
+                        repository.SaveToHistory(f, userId);
+                    });
+                    #endregion
                     sc.Complete();
                 }
                 catch (Exception ex)
@@ -203,7 +233,7 @@ namespace Engineer.Service
                 }
 
             }
-            #region send email notification in case diagram updated
+            #region send email notification / save to history in case diagram updated
                 openDiagrams.ForEach(diagram =>
                 {
                     repository.SaveToHistory(diagram, userId);

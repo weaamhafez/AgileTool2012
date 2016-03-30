@@ -24,8 +24,8 @@ namespace Engineer.EMF
                         if (user != null && !stories.Contains(story,new UserStoryComparer()))
                             stories.Add(story);
                     }
-                    if (story.AspNetUser != null && story.AspNetUser.Id == userId && !stories.Contains(story, new UserStoryComparer()))
-                        stories.Add(story);
+                    //if (story.AspNetUser != null && story.AspNetUser.Id == userId && !stories.Contains(story, new UserStoryComparer()))
+                    //    stories.Add(story);
                 }
                 
               );
@@ -76,6 +76,13 @@ namespace Engineer.EMF
             exist.Project = story.Project;
             exist.state = story.state;
             exist.AspNetUsers = story.AspNetUsers;
+            db.SaveChanges();
+        }
+
+        public void UpdateStoryAttachment(UserStory story)
+        {
+            var exist = Get(story);
+            exist.UserStoryAttachments = story.UserStoryAttachments;
             db.SaveChanges();
         }
 

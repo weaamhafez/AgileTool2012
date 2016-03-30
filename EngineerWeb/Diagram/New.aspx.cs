@@ -21,9 +21,11 @@ namespace EngineerWeb.Diagram
         {
             if(!IsPostBack)
             {
-                BindDataToUserStory();
                 if (!string.IsNullOrEmpty(Request.Params["Id"]))
                     LoadDiagram(Request.Params["Id"], Request.Params["UserStoryId"]);
+
+                else
+                    BindDataToUserStory();
 
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("interactions"))
@@ -72,6 +74,7 @@ namespace EngineerWeb.Diagram
                 diagramGraph.Value = diagram.activties;
                 UserStoryID.Value = userStoryId;
                 UserStoriesList.Visible = false;
+                UserStoriesLabel.Visible = false;
             }
         }
 

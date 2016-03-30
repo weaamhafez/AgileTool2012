@@ -50,7 +50,7 @@
             </div>
             <div class="row">
             <div class="form-group col-md-5">
-                    <asp:Label runat="server" Text="User Story" CssClass="col-md-3 control-label">
+                    <asp:Label runat="server" Text="User Story" CssClass="col-md-3 control-label" ID="UserStoriesLabel">
 
                     </asp:Label>
                     <asp:ListBox runat="server" ID="UserStoriesList" DataTextField="name" DataValueField="Id" CssClass="selectpicker" data-live-search="true" SelectionMode="Multiple" ClientIDMode="Static"/>

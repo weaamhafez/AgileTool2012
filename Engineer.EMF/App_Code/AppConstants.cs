@@ -29,5 +29,6 @@ namespace Engineer.EMF
         public static string PROJECT_STATUS_DELETED = "DELETED";
 
         public static readonly string DIAGRAM_STATUS_CLOSED = "CLOSED";
+        public static readonly string EXCEPTION_RETREIVE_DIAGRAM_HISTORY = "Error in retreive history";
     }
 }

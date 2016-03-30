@@ -21,12 +21,15 @@ namespace Engineer.EMF
             {
                 db.UserStoryAttachments.Where(w=>w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList().ForEach(diagram =>
                 {
-                    diagram.UserStory.AspNetUsers.ToList().ForEach(
+                    if(diagram.UserStory.state != AppConstants.USERSTORY_STATUS_DELETED)
+                    {
+                        diagram.UserStory.AspNetUsers.ToList().ForEach(
                         user =>
                         {
                             if (user != null && user.Id == userId)
                                 diagrams.Add(diagram);
                         });
+                    }
                 });
             }
             catch (Exception ex)
@@ -35,6 +38,11 @@ namespace Engineer.EMF
             }
 
             return diagrams;
+        }
+
+        public List<AttachmentHistory> FindDiagramHistory(UserStoryAttachment diagramObject)
+        {
+            return db.AttachmentHistories.Where(w => w.AttachId == diagramObject.attachId && w.UserStoryId == diagramObject.userStoryId).OrderBy(o=>o.Date).ToList();
         }
 
         public List<UserStoryAttachment> FindAll()
@@ -213,7 +221,7 @@ namespace Engineer.EMF
         {
             AttachmentHistory history = new AttachmentHistory()
             {
-                Graph = diagram.activties,
+                Graph = diagram.SVG,
                 UserId = userId,
                 Date = DateTime.Now,
                 AttachId = diagram.attachId,

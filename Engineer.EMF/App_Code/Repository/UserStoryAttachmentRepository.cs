@@ -20,5 +20,10 @@ namespace Engineer.EMF
             exist.state = diagram.state;
             db.SaveChanges();
         }
+
+        public AttachmentHistory GetHistory(int historyId)
+        {
+            return db.AttachmentHistories.SingleOrDefault(w => w.Id == historyId);
+        }
     }
 }

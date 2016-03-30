@@ -155,8 +155,9 @@ namespace Engineer.Service
                 try
                 {
                     userStory.state = AppConstants.USERSTORY_STATUS_DELETED;
-                    var exist = uRepository.Get(userStory);
                     uRepository.UpdateState(userStory);
+
+                    var exist = uRepository.Get(userStory);
 
                     #region all diagrams should be deleted
                     if (exist != null)
@@ -164,7 +165,7 @@ namespace Engineer.Service
                         exist.UserStoryAttachments.ToList().ForEach(d =>
                         {
                             UserStoryAttachmentRepository dR = new UserStoryAttachmentRepository();
-                            exist.state = AppConstants.DIAGRAM_STATUS_FINISIHED;
+                            d.state = AppConstants.DIAGRAM_STATUS_FINISIHED;
                             dR.UpdateStatus(d);
                         });
                     }

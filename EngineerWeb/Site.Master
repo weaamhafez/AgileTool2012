@@ -64,14 +64,8 @@
                                     <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
                                     <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>
                                     <li><a href='<%=ResolveUrl("Sprint/List") %>' ><i class="glyphicon glyphicon-share-alt"></i> Sprints</a></li>
-                                    <li><a href='<%=ResolveUrl("Reports/ListStories") %>' ><i class="glyphicon glyphicon-pencil"></i> Reports</a></li>
-                                    <li>
-					                    <a href="javascript:void(0);" data-toggle="collapse" data-target="#dataCatureMenuItem" class="collapsed" aria-expanded="false"><i class="glyphicon glyphicon-search"></i> Search <i class="glyphicon glyphicon-collapse-down"></i></a>
-					                    <ul id="dataCatureMenuItem" class="collapse" aria-expanded="false">
-						                <li id="dataCatureFormListMenuItem"><a href='<%=ResolveUrl("Search/Diagram/Form") %>'><i
-								                class="glyphicon glyphicon-edit"></i> Diagram</a></li>
-						                <li id="dataCatureFormCreateMenuItem"><a href='<%=ResolveUrl("Search/User/Form") %>'><i class="glyphicon glyphicon-user"></i> User</a></li>
-                                    </li>
+                                    <li><a href='<%=ResolveUrl("Search/Diagram/Form") %>'><i class="glyphicon glyphicon-search"></i> Search</a></li>
+                                    <li><a href='<%=ResolveUrl("History/List") %>'><i class="glyphicon glyphicon-time"></i> History</a></li>
 					            </ul>
                             </div>
                         </ContentTemplate>
@@ -85,13 +79,16 @@
                         <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
                         <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>
                         <li><a href='<%=ResolveUrl("Sprint/List") %>' ><i class="glyphicon glyphicon-share-alt"></i> Sprints</a></li>
-                        <li>
+                        <%--<li>
 					        <a href="javascript:void(0);" data-toggle="collapse" data-target="#dataCatureMenuItem" class="collapsed" aria-expanded="false"><i class="glyphicon glyphicon-search"></i> Search <i class="glyphicon glyphicon-collapse-down"></i></a>
 					        <ul id="dataCatureMenuItem" class="collapse" aria-expanded="false">
 						    <li id="dataCatureFormListMenuItem"><a href='<%=ResolveUrl("Search/Diagram/Form") %>'><i
 								    class="glyphicon glyphicon-edit"></i> Diagram</a></li>
 						    <li id="dataCatureFormCreateMenuItem"><a href='<%=ResolveUrl("Search/User/Form") %>'><i class="glyphicon glyphicon-user"></i> User</a></li>
-                        </li>
+                        </li>--%>
+                        <li><a href='<%=ResolveUrl("Search/Diagram/Form") %>'><i
+								                    class="glyphicon glyphicon-search"></i> Search</a></li>
+                        <li><a href='<%=ResolveUrl("History/List") %>'><i class="glyphicon glyphicon-time"></i> History</a></li>
 					</ul>
                 </div>
                  </LoggedInTemplate>

@@ -216,6 +216,8 @@
     <Content Include="Diagram\Snippets\ctrlName.html" />
     <Content Include="Diagram\Snippets\order.html" />
     <Content Include="Diagram\View.aspx" />
+    <Content Include="History\List.aspx" />
+    <Content Include="History\View.aspx" />
     <Content Include="Reports\ListStories.aspx" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-select.min.js" />
@@ -278,7 +280,9 @@
     <Content Include="Scripts\jquery-ui\jquery-ui.theme.min.css" />
     <Content Include="Scripts\JointJs\lodash.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\Modules\History\list.js" />
     <Content Include="Scripts\Modules\Diagrams\view.js" />
+    <Content Include="Scripts\Modules\History\view.js" />
     <Content Include="Scripts\Modules\Project\list.js" />
     <Content Include="Scripts\Modules\Search\User\form.js" />
     <Content Include="Scripts\Modules\Search\Diagram\form.js" />
@@ -536,6 +540,20 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="History\List.aspx.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="History\List.aspx.designer.cs">
+      <DependentUpon>List.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="History\View.aspx.cs">
+      <DependentUpon>View.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="History\View.aspx.designer.cs">
+      <DependentUpon>View.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="App_Code\Utils.cs" />
