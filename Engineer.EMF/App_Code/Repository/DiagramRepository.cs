@@ -115,7 +115,7 @@ namespace Engineer.EMF
             //get by users
             if (users != null && users.Length > 0)
             {
-                var attachmentsByUsers = db.UserStoryAttachments.Where(w => (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED || w.UserStory.Sprints.Select(t => t.state == AppConstants.SPRINT_STATUS_CLOSED).Count() > 0)
+                var attachmentsByUsers = db.UserStoryAttachments.Where(w => (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED)
                 && w.UserStory.AspNetUsers.Where(t => users.Contains(t.Id)).Count() > 0);
                 attachments.Add("users", attachmentsByUsers.ToList());
             }
