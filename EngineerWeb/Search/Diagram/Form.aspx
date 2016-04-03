@@ -58,5 +58,6 @@
      </div>
     <script type="text/javascript">
         var searchURL = '<%=ResolveUrl("Form.aspx/Search")%>';
+         var viewURL = '<%=ResolveUrl("Diagram/View")%>';
     </script>
 </asp:Content>

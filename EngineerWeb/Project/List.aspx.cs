@@ -30,7 +30,7 @@ namespace EngineerWeb.Project
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("listProjects"))
                     cs.RegisterStartupScript(this.GetType(), "listProjects",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Project/list.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Project/list.js") + "\" ></script>", false);
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿function openView($diagram) {
-    window.location.href = "/Diagram/View?id=" + $($diagram).data("id") + "&storyId=" + $($diagram).data("storyid");
+    window.location.href = viewURL +"?id=" + $($diagram).data("id") + "&storyId=" + $($diagram).data("storyid");
 }
 $(document).ready(function () {
     var formsTable;

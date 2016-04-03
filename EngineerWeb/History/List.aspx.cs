@@ -25,7 +25,7 @@ namespace EngineerWeb.History
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("listHistory"))
                     cs.RegisterStartupScript(this.GetType(), "listHistory",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/History/list.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/History/list.js") + "\" ></script>", false);
             }
 
         }

@@ -24,7 +24,7 @@ namespace EngineerWeb.Diagram
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("listDiagrams"))
                     cs.RegisterStartupScript(this.GetType(), "listDiagrams",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/list.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/list.js") + "\" ></script>", false);
             }
             
         }

@@ -19,7 +19,7 @@ namespace EngineerWeb.Diagram
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("viewImage"))
                     cs.RegisterStartupScript(this.GetType(), "viewImage",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/view.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/view.js") + "\" ></script>", false);
                 if (!string.IsNullOrEmpty(Request.Params["id"]))
                 {
                     var diagram = service.FindByIDAndUserStory(int.Parse(Request.Params["id"]),int.Parse(Request.Params["storyId"]));

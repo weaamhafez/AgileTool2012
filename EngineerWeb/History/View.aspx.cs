@@ -19,7 +19,7 @@ namespace EngineerWeb.History
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("viewHistoryImage"))
                     cs.RegisterStartupScript(this.GetType(), "viewHistoryImage",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/History/view.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/History/view.js") + "\" ></script>", false);
                 if (!string.IsNullOrEmpty(Request.Params["id"]))
                 {
                     var diagram = service.FindHistoryByIDAndUserStory(int.Parse(Request.Params["id"]));

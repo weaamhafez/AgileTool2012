@@ -63,27 +63,4 @@ $(document).ready(function () {
     });
     /////////////////////////////////////////////////
 });
-function attachItemsEvent()
-{
-    var previewItem = $($(".previewItem")[$(".previewItem").length - 1]).children().find(".viewport");
-    var activities = $(previewItem).children();
-   // var allCells = paper.getEmbeddedCells();
-    for (var i = 0; i < activities.length ; i++) {
-        var selItem = $(activities)[i];
-        var modelId = $(selItem).attr("model-id");
-        if (paper.getModelById(modelId).attributes.type === "link")
-            continue;
-
-        if ($(selItem).length > 0) {
-            var ctrlName = "ctrl" + (count++);
-            var json = {
-                "ctrlName": ctrlName,
-                "order": "" + (order++),
-                "label": paper.getModelById(modelId).attributes.attrs.text.text
-            };
-            $(selItem).data("prop", json);
-        }
-    }
-    
-}
 //# sourceURL=activity.js

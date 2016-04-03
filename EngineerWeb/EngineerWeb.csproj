@@ -197,6 +197,14 @@
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
+    <Content Include="App_Data\aspnet-EngineerWeb-20160302104213.mdf" />
+    <Content Include="App_Data\aspnet-EngineerWeb-20160302104213_log.ldf">
+      <DependentUpon>aspnet-EngineerWeb-20160302104213.mdf</DependentUpon>
+    </Content>
+    <Content Include="App_Data\ASPNETDB.MDF" />
+    <Content Include="App_Data\aspnetdb_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
+    </Content>
     <Content Include="App_Data\dbo.AspNetRoles.data.sql" />
     <Content Include="App_Data\Mail.xml" />
     <Content Include="Contact.aspx" />
@@ -399,6 +407,7 @@
     <Content Include="Scripts\select2\release.sh" />
     <Content Include="Scripts\select2\select2.jquery.json" />
     <Content Include="Scripts\select2\select2_locale_en.js.template" />
+    <None Include="Properties\PublishProfiles\EngineerWeb.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

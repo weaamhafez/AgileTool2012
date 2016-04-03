@@ -26,8 +26,9 @@ namespace EngineerWeb.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        private static string connectionName = System.Configuration.ConfigurationSettings.AppSettings["LoginDbName"];
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base(connectionName, throwIfV1Schema: false)
         {
         }
 

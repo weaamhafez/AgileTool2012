@@ -26,7 +26,7 @@ namespace EngineerWeb.Sprint
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("listSprints"))
                     cs.RegisterStartupScript(this.GetType(), "listSprints",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Sprint/list.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Sprint/list.js") + "\" ></script>", false);
 
                 BindData();
             }

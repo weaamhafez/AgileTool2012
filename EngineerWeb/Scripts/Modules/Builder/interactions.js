@@ -158,18 +158,50 @@ function loadGraph()
             });
         }
         graph = graph.fromJSON(graphJSON);
+        var lastLoaded = false;
         if (graph.attributes.cells.models.length > 0)
         {
-            for(var i=graph.attributes.cells.models.length - 1;i>=0;i--)
+            var parentItem = $("#preview");
+            for (var i = 0; i<= graph.attributes.cells.models.length - 1; i++)
             {
                 if (graph.attributes.cells.models[i].attributes.type == "basic.Rect")
                 {
+                    // load preview read from graph
+                    var newItem = $("<div></div>").addClass('previewItem');
+                    var type = "activity";
+                    newItem.data("type", type);
+                    var ctrlName = "ctrl" + (count++);
+                    var prop = {
+                        "ctrlName": ctrlName,
+                        "order": "" + (order++),
+                        "label": graph.attributes.cells.models[i].attributes.attrs.text.text
+                    };
+                    newItem.data("prop", prop);
+                    newItem.html(_previewTemplates[type]);
                     rect = graph.attributes.cells.models[i];
-                    break;
+                    //parentItem.append(newItem);
                 }
-                    
             }
         }
+        paper.on('cell:pointerclick', function (cellView, evt, x, y) {
+            //saveCurrentSelItemProp();
+            selected = cellView.model;
+            var activityId = cellView.model.id;
+            for (var i = 0; i < $(".previewItem").children().length ; i++) {
+                var selItem = $($(".previewItem").children().find(".viewport").children()).filter(function () { return $(this).attr("model-id") == activityId; });
+                if (selItem.length > 0) {
+                    var type = $(selItem).parents(".previewItem").data("type");
+                    _selItem = $(selItem);
+                    var tempFn = _propTemplates[type];
+                    var result = tempFn(_selItem.data("prop"));
+                    $("#prop").html(result);
+                    $("#preview .selectedControl").removeClass("selectedControl");
+                    $(this).addClass("selectedControl");
+                    break;
+                }
+            }
+
+        });
 
         $("#renameMenu").hide();
     }

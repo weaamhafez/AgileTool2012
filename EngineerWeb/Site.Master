@@ -74,7 +74,7 @@
                 <LoggedInTemplate>
                 <div id="sidebar-wrapper">
                     <ul class="sidebar-nav" id="menu">
-                        <li class="active"><a href="<%=ResolveUrl("/") %>"><i
+                        <li class="active"><a href="<%=ResolveUrl("~/") %>"><i
 						        class="glyphicon glyphicon-dashboard"></i> Home</a></li>
                         <li><a href='<%=ResolveUrl("User_Story/List") %>' ><i class="glyphicon glyphicon-book"></i> User Stories</a></li>
                         <li><a href='<%=ResolveUrl("Diagram/List") %>' ><i class="glyphicon glyphicon-edit"></i> Diagrams</a></li>

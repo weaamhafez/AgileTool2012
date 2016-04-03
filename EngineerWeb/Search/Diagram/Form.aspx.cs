@@ -24,7 +24,7 @@ namespace EngineerWeb.Search.Diagram
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("searchDiagrams"))
                     cs.RegisterStartupScript(this.GetType(), "searchDiagrams",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Search/Diagram/form.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Search/Diagram/form.js") + "\" ></script>", false);
             }
         }
 

@@ -30,7 +30,7 @@ namespace EngineerWeb.Diagram
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("interactions"))
                     cs.RegisterStartupScript(this.GetType(), "interactions",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Builder/interactions.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Builder/interactions.js") + "\" ></script>", false);
 
                 #region Add templates
                 Dictionary<string, Dictionary<string, string>> templates = new Dictionary<string, Dictionary<string, string>>();

@@ -25,7 +25,7 @@ namespace EngineerWeb.User_Story
                 ClientScriptManager cs = Page.ClientScript;
                 if (!cs.IsStartupScriptRegistered("listStories"))
                     cs.RegisterStartupScript(this.GetType(), "listStories",
-                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Story/list.js") + "\" />", false);
+                        "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Story/list.js") + "\" ></script>", false);
                 BindData();
             }
         }
