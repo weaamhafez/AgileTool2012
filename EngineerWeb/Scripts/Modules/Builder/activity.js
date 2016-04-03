@@ -41,26 +41,45 @@ $(document).ready(function () {
 
     // on selecting activity
     paper.on('cell:pointerclick', function (cellView, evt, x, y) {
-        //saveCurrentSelItemProp();
+        saveCurrentSelItemProp();
         selected = cellView.model;
         var activityId = cellView.model.id;
-        for(var i=0;i<$(".previewItem").children().length ; i++)
+        var selItem = $($("#preview").children().find(".viewport").children()).filter(function () { return $(this).attr("model-id") == activityId; });
+        if (selItem.length > 0)
         {
-            var selItem = $($(".previewItem").children().find(".viewport").children()).filter(function () { return $(this).attr("model-id") == activityId; });
-            if (selItem.length > 0)
-            {
-                var type = $(selItem).parents(".previewItem").data("type");
-                _selItem  = $(selItem);
-                var tempFn = _propTemplates[type];
-                var result = tempFn(_selItem.data("prop"));
-                $("#prop").html(result);
-                $("#preview .selectedControl").removeClass("selectedControl");
-                $(this).addClass("selectedControl");
-                break;
-            }
+            var type = $(selItem).data("type");
+            _selItem  = $(selItem);
+            var tempFn = _propTemplates[type];
+            var result = tempFn(_selItem.data("prop"));
+            $("#prop").html(result);
+            $("#preview .selectedControl").removeClass("selectedControl");
+            $(this).addClass("selectedControl");
         }
             
     });
     /////////////////////////////////////////////////
 });
+function attachItemsEvent() {
+    var previewItem = $("#preview").children().find(".viewport");
+    var activities = $(previewItem).children();
+    // var allCells = paper.getEmbeddedCells();
+    for (var i = 0; i < activities.length ; i++) {
+        var selItem = $(activities)[i];
+        var modelId = $(selItem).attr("model-id");
+        if (paper.getModelById(modelId).attributes.type === "link")
+            continue;
+
+        if ($(selItem).length > 0) {
+            var ctrlName = "ctrl" + (count++);
+            var json = {
+                "ctrlName": ctrlName,
+                "order": "" + (order++),
+                "label": paper.getModelById(modelId).attributes.attrs.text.text
+            };
+            $(selItem).data("prop", json);
+            $(selItem).data("type", "activity");
+        }
+    }
+
+}
 //# sourceURL=activity.js
