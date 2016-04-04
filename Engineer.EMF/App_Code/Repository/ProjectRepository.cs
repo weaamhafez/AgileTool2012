@@ -17,7 +17,7 @@ namespace Engineer.EMF
             var projects = new List<Project>();
             try
             {
-                return db.Projects.Where(w => w.AspNetUsers.Where(user => user.Id == userId).Count() > 0).ToList();
+                return db.Projects.Where(w => w.AspNetUsers.Where(user => user.Id == userId).Count() > 0 && w.state != AppConstants.PROJECT_STATUS_DELETED).ToList();
                 //var userStories = userStoryRepository.FindByUser(userId);
                 //if(userStories != null)
                 //{
@@ -59,7 +59,7 @@ namespace Engineer.EMF
                     project.AspNetUsers.Add(uRep.FindById(assignUser));
                 }
             }
-            db.Projects.Add(project);
+            project = db.Projects.Add(project);
             db.SaveChanges();
         }
 

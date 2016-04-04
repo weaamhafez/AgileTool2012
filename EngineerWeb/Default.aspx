@@ -8,7 +8,7 @@
                         <ContentTemplate>
                              <div class="col-lg-4 col-md-6">
                                 <a href='<%=ResolveUrl("Project/List") %>'>
-                                   <div class="panel panel-yellow">
+                                   <div class="panel panel-green">
                                         <div class="panel-heading">
                                             <div class="row">
                                                 <div class="col-xs-3">
@@ -22,7 +22,7 @@
                                          </div>
                                        <div class="panel-footer"> 
                                             <a href="#">
-                                               <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal1">View Details</button></span></div>
+                                               <div class="panel panel-green"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal1">View Details</button></span></div>
                                             </a>
                                            <div class="clearfix"></div>
                                        </div>
@@ -36,21 +36,21 @@
         </asp:LoginView>
         <div class="col-lg-4 col-md-6">
             <a href='<%=ResolveUrl("User_Story/List") %>'>
-               <div class="panel panel-yellow">
+               <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
                               <i class="glyphicon glyphicon-book glyphicon-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                              <div class="huge">User Stories</div>
+                              <div class="huge">Stories</div>
                               <div>Create User stories and assign users.</div>
                             </div>
                         </div>
                      </div>
                     <div class="panel-footer"> 
                         <a href="#">
-                           <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal2">View Details</button></span></div>
+                           <div class="panel panel-green"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal2">View Details</button></span></div>
                         </a>
                        <div class="clearfix"></div>
                     </div>
@@ -59,7 +59,7 @@
         </div>
         <div class="col-lg-4 col-md-6">
             <a href='<%=ResolveUrl("Diagram/List") %>'>
-               <div class="panel panel-yellow">
+               <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
@@ -73,7 +73,7 @@
                      </div>
                    <div class="panel-footer"> 
                         <a href="#">
-                           <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal3">View Details</button></span></div>
+                           <div class="panel panel-green"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal3">View Details</button></span></div>
                         </a>
                        <div class="clearfix"></div>
                     </div>
@@ -85,7 +85,7 @@
     <div class="row">
         <div class="col-lg-4 col-md-6">
             <a href='<%=ResolveUrl("Sprint/List") %>'>
-               <div class="panel panel-yellow">
+               <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
@@ -99,7 +99,7 @@
                      </div>
                    <div class="panel-footer"> 
                         <a href="#">
-                           <div class="panel panel-yellow"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal4">View Details</button></span></div>
+                           <div class="panel panel-green"> <span class="pull-left"><button type="button" class="btn btn-primary btn-sl" data-toggle="modal" data-target="#myModal4">View Details</button></span></div>
                         </a>
                        <div class="clearfix"></div>
                     </div>

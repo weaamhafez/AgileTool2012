@@ -64,7 +64,7 @@ namespace EngineerWeb.Diagram
         public static object FindStoriesByDiagram(IDictionary<string, object> diagram)
         {
             UserStoryService service = (UserStoryService)new ServiceLocator<UserStory>().locate();
-            var diagrams = service.FindByDiagramID(int.Parse(diagram["Id"].ToString()));
+            var diagrams = service.FindByDiagramID(int.Parse(diagram["attachId"].ToString()));
             return Utils.SerializeObject(diagrams);
         }
 

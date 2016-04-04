@@ -40,7 +40,7 @@ $(document).ready(function () {
     attachItemsEvent();
 
     // on selecting activity
-    paper.on('cell:pointerclick', function (cellView, evt, x, y) {
+    paper.on('cell:pointerdown', function (cellView, evt, x, y) {
         saveCurrentSelItemProp();
         selected = cellView.model;
         var activityId = cellView.model.id;

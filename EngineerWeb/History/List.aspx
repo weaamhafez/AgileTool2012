@@ -1,9 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="EngineerWeb.History.List" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
         <div style="margin-top: 30px">
-                <div class="row"><button type="button" class="btn btn-success custom-button-width navbar-right" id="addDiagram">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span> New Diagram
-              </button></div>
                 <div class="col-md-10 col-md-offset-1">
                     <table id="diagramsTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>

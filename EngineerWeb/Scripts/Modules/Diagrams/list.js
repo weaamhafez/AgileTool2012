@@ -1,5 +1,6 @@
 ﻿var diagramJSON;
 var userStoriesTable;
+
 function openRemoveDialog($project) {
     var diagramId = $($project).data("id");
 
@@ -11,7 +12,7 @@ function openRemoveDialog($project) {
             "type": "POST",
             "url": loadUserStoriesURL,
             "data": function(d) {
-                d.diagram = { Id: diagramId };
+                d.diagram = { attachId: diagramId, userStoryId: $($project).data("userstoryid") };
                 diagramJSON = JSON.stringify(d);
                 return diagramJSON;
             },
@@ -105,33 +106,36 @@ $(document).ready(function () {
     });
     $('#deleteBtn').click(function (e) {
 
-        e.preventDefault();
-        var $btn = $(this).button('loading');
-        $.ajax({
-            type: "POST",
-            url: deleteURL,
-            data: diagramJSON,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-                formsTable.ajax.reload();
-                $btn.button('reset');
-                $('#removeModal').modal('hide');
-                return false;
-            },
-            error: function (message) {
-                errorAlert(message.responseJSON.Message);
-                $btn.button('reset');
+        var box = bootbox.confirm("You are going to delete, Proceed?", function (result) {
+            if (result) {
+                box.modal("hide");
+                var $btn = $(this).button('loading');
+                $.ajax({
+                    type: "POST",
+                    url: deleteURL,
+                    data: diagramJSON,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        formsTable.ajax.reload();
+                        $btn.button('reset');
+                        $('#removeModal').modal('hide');
+                        return false;
+                    },
+                    error: function (message) {
+                        errorAlert(message.responseJSON.Message);
+                        $btn.button('reset');
+                        return false;
+                    }
+                });
                 return false;
             }
+            else
+                box.modal("hide");
         });
-        return false;
+        
     });
     $("#addDiagram").on("click", function (e) {
         window.location.href = "New";
     });
-    //$('#removeModal').on('hidden.bs.modal', function () {
-    //    if (userStoriesTable)
-    //        userStoriesTable.destroy();
-    //});
 });

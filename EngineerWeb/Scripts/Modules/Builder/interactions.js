@@ -172,22 +172,23 @@ function loadGraph()
                     }
                 }
             }
+            paper.on('cell:pointerdown', function (cellView, evt, x, y) {
+                saveCurrentSelItemProp();
+                selected = cellView.model;
+                var activityId = cellView.model.id;
+                var selItem = $($("#preview").children().find(".viewport").children()).filter(function () { return $(this).attr("model-id") == activityId; });
+                if (selItem.length > 0) {
+                    var type = $(selItem).data("type");
+                    _selItem = $(selItem);
+                    var tempFn = _propTemplates[type];
+                    var result = tempFn(_selItem.data("prop"));
+                    $("#prop").html(result);
+                    $("#preview .selectedControl").removeClass("selectedControl");
+                    $(this).addClass("selectedControl");
+                }
+            });
         }
-        paper.on('cell:pointerclick', function (cellView, evt, x, y) {
-            saveCurrentSelItemProp();
-            selected = cellView.model;
-            var activityId = cellView.model.id;
-            var selItem = $($("#preview").children().find(".viewport").children()).filter(function () { return $(this).attr("model-id") == activityId; });
-            if (selItem.length > 0) {
-                var type = $(selItem).data("type");
-                _selItem = $(selItem);
-                var tempFn = _propTemplates[type];
-                var result = tempFn(_selItem.data("prop"));
-                $("#prop").html(result);
-                $("#preview .selectedControl").removeClass("selectedControl");
-                $(this).addClass("selectedControl");
-            }
-        });
+        
 
         $("#renameMenu").hide();
     }

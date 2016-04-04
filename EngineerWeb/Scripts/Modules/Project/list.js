@@ -1,50 +1,35 @@
-﻿function openUpdateDialog($project) {
-    var project = JSON.parse(decodeURI($($project).data("project")));
-    $("#project-name").val(project["name"]);
-    $("#description").val(project["description"]);
-    $("#project-id").val(project["Id"]);
-    var projectJSON = { project: project["Id"] };
-    $.ajax({
-        type: "POST",
-        url: "List.aspx/GetProjectUsers",
-        data: JSON.stringify(projectJSON),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (users) {
-            if (users.d.length > 0)
-            {
-                for (var i = 0; i < users.d.length; i++)
-                {
-                    $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").attr("selected", "selected");
-                    $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").prop("selected", "selected");
-                }
-                   
+﻿(function () {
+    'use strict';
 
-                $("#AspNetUsers").selectpicker('refresh')
-            }
-            $("#projectModal").modal("show");
-            return false;
-        },
-        error: function (message) {
-            errorAlert(message.responseJSON.Message);
-            return false;
-        }
-    });
-    
-};
-var formsTable;
-function removeObject($project) {
-    var params = { "project": { Id: $($project).data("id") } };
-    bootbox.confirm("Are you sure?", function (result) {
-        if (result) {
+    angular
+        .module('app')
+        .controller('controller', controller);
+
+    controller.$inject = ['$scope','$compile'];
+    function controller($scope, $compile) {
+        $scope.openUpdateDialog = function($project) {
+            var project = JSON.parse(decodeURI($($project.currentTarget).data("project")));
+            $scope.projectName = project["name"];
+            $scope.description = project["description"];
+            $scope.projectId = project["Id"];
+            var projectJSON = { project: project["Id"] };
             $.ajax({
                 type: "POST",
-                url: deleteURL,
-                data: JSON.stringify(params),
+                url: "List.aspx/GetProjectUsers",
+                data: JSON.stringify(projectJSON),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (msg) {
-                    formsTable.ajax.reload();
+                success: function (users) {
+                    if (users.d.length > 0) {
+                        for (var i = 0; i < users.d.length; i++) {
+                            $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").attr("selected", "selected");
+                            $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").prop("selected", "selected");
+                        }
+
+
+                        $("#AspNetUsers").selectpicker('refresh')
+                    }
+                    $("#projectModal").modal("show");
                     return false;
                 },
                 error: function (message) {
@@ -52,12 +37,32 @@ function removeObject($project) {
                     return false;
                 }
             });
-        }
-    });
-}
 
-$(document).ready(function () {
-    const $diagramsTable = $('#diagramsTable');
+        };
+        var formsTable;
+        $scope.removeObject = function($project) {
+            var params = { "project": { Id: $($project.currentTarget).data("id") } };
+            bootbox.confirm("Are you sure?", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: deleteURL,
+                        data: JSON.stringify(params),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+                            formsTable.ajax.reload();
+                            return false;
+                        },
+                        error: function (message) {
+                            errorAlert(message.responseJSON.Message);
+                            return false;
+                        }
+                    });
+                }
+            });
+        }
+        const $diagramsTable = $('#diagramsTable');
 
     formsTable = $diagramsTable.DataTable({
         "processing": true,
@@ -69,13 +74,18 @@ $(document).ready(function () {
         "dataSrc":"d"
         },
         "paging": true,
+        destroy: true,
         "columns": [
             {"data": "name"},{"data": "description"},
             {
-                "data": "name",
-                "render": function (data, type, full, meta) {
-                    return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>' +
-                        '<ul class="dropdown-menu"><li><a href="javascript:void(0)" onclick="openUpdateDialog(this)" data-project="' + encodeURI(JSON.stringify(full)) + '">Update</a></li><li><a href="javascript:void(0)" data-id="' + full.Id + '" onclick="removeObject(this)">Delete</a></li></ul></div>';
+                data: "name",
+                "render":function(){
+                    return "";
+                },
+                "createdCell": function (td, cellData, rowData, row, col) {
+                    var $el = ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>' +
+                        '<ul class="dropdown-menu"><li><a href="javascript:void(0)" ng-click="openUpdateDialog($event)" data-project="' + encodeURI(JSON.stringify(rowData)) + '">Update</a></li><li><a href="javascript:void(0)" data-id="' + rowData.Id + '" ng-click="removeObject($event)">Delete</a></li></ul></div>';
+                    $(td).append($compile($el)($scope));
                 }
             }
         ]
@@ -131,4 +141,7 @@ $(document).ready(function () {
         $('#project_div').find("input[type=text],input[type=hidden],select,textarea").val("");
         $('#project_div').find(".selectpicker").selectpicker('refresh');
     });
-});
+    }
+    
+})();
+

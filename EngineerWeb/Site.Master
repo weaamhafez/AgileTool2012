@@ -142,7 +142,7 @@
                 </div>
            
         
-                <div class="container body-content">
+                <div class="container body-content" ng-app="app">
                     <asp:ContentPlaceHolder ID="MainContent" runat="server">
                     </asp:ContentPlaceHolder>
                     <hr />

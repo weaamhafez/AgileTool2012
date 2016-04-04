@@ -1,5 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="List.aspx.cs" Inherits="EngineerWeb.Project.List" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <script type="text/javascript" src="../Scripts/angular.js"></script>
+        <script type="text/javascript" src="../Scripts/angular-resource.min.js"></script>
+        <script type="text/javascript" src="../Scripts/Modules/Angular/app.js"></script>
+    <div ng-controller="controller">
     <div style="margin-top: 30px">
                 <div class="row"><button type="button" class="btn btn-success custom-button-width navbar-right" data-toggle="modal" data-target="#projectModal">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span> New Project
@@ -32,17 +36,17 @@
                             <h4 class="modal-title" id="projectModalLabel">Create Project</h4>
                         </div>
                         <div class="modal-body" id="project_div" data-toggle="validator" role="textbox">
-                                <input type="hidden" id="project-id" name="Id" value="0"/>
+                                <input type="hidden" id="project-id" name="Id" ng-value="projectId"/>
                                 <div class="form-group">
                                     <label for="project-name" class="col-md-3 control-label">Project Name</label>
                                     <div class="col-md-8">
-                                        <input type="text" class="form-control" id="project-name" name="name" required data-error="*">
+                                        <input type="text" class="form-control" id="project-name" name="name" required data-error="*" ng-model="projectName">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-md-3 control-label">Description</label>
                                     <div class="col-md-8">
-                                        <textarea class="form-control" id="description" name="description" style="width:280px!important"></textarea>
+                                        <textarea class="form-control" id="description" name="description" style="width:280px!important" ng-model="description" ></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -59,6 +63,7 @@
                     </div>
                 </div>
             </div>
+    </div>
     <script type="text/javascript">
         var datatableURL = '<%=ResolveUrl("List.aspx/GetAllProjects")%>';
         var saveOrUpdateURL = '<%=ResolveUrl("List.aspx/SaveOrUpdate")%>';
