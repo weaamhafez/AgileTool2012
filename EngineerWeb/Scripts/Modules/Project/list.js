@@ -9,9 +9,7 @@
     function controller($scope, $compile) {
         $scope.openUpdateDialog = function($project) {
             var project = JSON.parse(decodeURI($($project.currentTarget).data("project")));
-            $scope.projectName = project["name"];
-            $scope.description = project["description"];
-            $scope.projectId = project["Id"];
+            $scope.project = project;
             var projectJSON = { project: project["Id"] };
             $.ajax({
                 type: "POST",
@@ -25,9 +23,7 @@
                             $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").attr("selected", "selected");
                             $("#AspNetUsers option[value=\"" + (users.d)[i].Id + "\"]").prop("selected", "selected");
                         }
-
-
-                        $("#AspNetUsers").selectpicker('refresh')
+                        $("#AspNetUsers").selectpicker('refresh');
                     }
                     $("#projectModal").modal("show");
                     return false;

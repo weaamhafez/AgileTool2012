@@ -131,6 +131,14 @@ namespace Engineer.EMF
             return db.UserStories.SingleOrDefault(s => s.Id == sId && s.state != AppConstants.USERSTORY_STATUS_DELETED);
         }
 
+        public List<UserStory> FindByDiagramIDAndNotShared(int attachId,string userId)
+        {
+            var attachStories = db.UserStoryAttachments.Where(w => w.attachId == attachId).Select(s=>s.UserStory).ToList();
+            var stories = db.UserStories.Where(w=>w.AspNetUsers.Where(user=>user.Id == userId).Count() > 0
+            && w.state == AppConstants.USERSTORY_STATUS_OPEN).ToList();
+            return new List<UserStory>(stories.Except(attachStories, new UserStoryComparer()));
+        }
+
         public List<UserStory> FindByDiagramID(int diagramId)
         {
             return db.UserStories.Where(w => w.UserStoryAttachments.Where(attach => attach.attachId == diagramId).Count() > 0).ToList();

@@ -18,6 +18,24 @@
       </P>]]>
     </body>
   </email>
+  <email name="DeleteDiagram">
+    <subject>
+      <![CDATA[Diagram: {0}, Diagram deletion]]>
+    </subject>
+    <body>
+      <![CDATA[      
+      Dear {1}, 
+      <P> Name:        {2} <br>
+          Diagram:    {0} <br>
+          Story:    {3} <br>
+      </P>
+
+      <P>We acknowledge the deletion of above diagram number on Engineer System</P>
+       <P>
+        NOTE: This is a system generated email. Please do not respond to this email address.
+      </P>]]>
+    </body>
+  </email>
   <email name="NewEmail">
     <subject>
       <![CDATA[Engineer System , you have been added]]>

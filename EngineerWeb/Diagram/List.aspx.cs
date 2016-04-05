@@ -9,6 +9,7 @@ using Engineer.Service;
 using System.Collections.Generic;
 using EngineerWeb.Project;
 using Engineer.EMF.Utils.Exceptions;
+using System.Linq;
 
 namespace EngineerWeb.Diagram
 {
@@ -47,7 +48,7 @@ namespace EngineerWeb.Diagram
         {
             try
             {
-                service.Delete(Utils.ToObject<Engineer.EMF.UserStoryAttachment>(diagram));
+                service.Delete(Utils.ToObject<Engineer.EMF.UserStoryAttachment>(diagram),new List().GetUserId());
             }
             catch (BadRequestException e)
             {
@@ -66,6 +67,34 @@ namespace EngineerWeb.Diagram
             UserStoryService service = (UserStoryService)new ServiceLocator<UserStory>().locate();
             var diagrams = service.FindByDiagramID(int.Parse(diagram["attachId"].ToString()));
             return Utils.SerializeObject(diagrams);
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static object RetreiveValidStories(string attachId)
+        {
+            UserStoryService service = (UserStoryService)new ServiceLocator<UserStory>().locate();
+            var stories = service.FindByDiagramIDAndNotShared(int.Parse(attachId), new List().GetUserId());
+            return Utils.SerializeObject(stories);
+        }
+
+        [System.Web.Services.WebMethod]
+        [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+        public static object Share(IDictionary<string, string> diagram)
+        {
+            DiagramService service = (DiagramService)new ServiceLocator<Attachment>().locate();
+            var stories = new List<UserStoryAttachment>();
+            IEnumerable<string> storiesStr =   !string.IsNullOrEmpty(diagram["userStories"]) ? diagram["userStories"].Split(',') : Enumerable.Empty<string>();
+            storiesStr.ToList().ForEach(f =>
+            {
+                stories.Add(new UserStoryAttachment() { userStoryId = int.Parse(f) ,attachId=int.Parse(diagram["attachId"]) });
+            });
+            var diagramObject = new Attachment() {
+                Id = int.Parse(diagram["attachId"]),
+                UserStoryAttachments = stories
+            };
+            service.Share(diagramObject, int.Parse(diagram["userStoryId"]), new List().GetUserId());
+            return Utils.SerializeObject(stories);
         }
 
         [System.Web.Services.WebMethod]

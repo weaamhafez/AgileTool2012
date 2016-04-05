@@ -17,10 +17,22 @@ namespace Engineer.Service
     {
         DiagramRepository repository = new DiagramRepository();
         UserStoryAttachmentRepository rep = new UserStoryAttachmentRepository();
-        public void Delete(UserStoryAttachment diagram)
+        public void Delete(UserStoryAttachment diagram,string userId)
         {
             diagram.state = AppConstants.DIAGRAM_STATUS_FINISIHED;
             rep.UpdateStatus(diagram);
+
+            #region send email notification / save to history in case diagram updated
+            try
+            {
+                diagram = rep.Get(diagram);
+                SendEmail(diagram, userId, "DeleteDiagram");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Cannot send email" + ex.Message);
+            }
+            #endregion
         }
 
         public List<UserStoryAttachment> FindByStoryID(int Id)
@@ -145,6 +157,35 @@ namespace Engineer.Service
 
         }
 
+        public void Share(Attachment diagramObject,int userStoryId, string userId)
+        {
+            TransactionOptions _transcOptions = new TransactionOptions();
+            _transcOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+            using (TransactionScope sc = new TransactionScope(TransactionScopeOption.Required, _transcOptions, EnterpriseServicesInteropOption.Full))
+            {
+                try
+                {
+                    UserStoryAttachment attachment = rep.Get(new UserStoryAttachment() { attachId = diagramObject.Id, userStoryId = userStoryId });
+                    diagramObject.UserStoryAttachments.ToList().ForEach(attach =>
+                    {
+                        attach.activties = attachment.activties;
+                        attach.state = AppConstants.DIAGRAM_STATUS_OPEN;
+                        attach.SVG = attachment.SVG;
+                        attach.update_by = userId;
+                        attach.update_date = DateTime.Now;
+                    });
+                    rep.Add(diagramObject.UserStoryAttachments.ToList());
+                    sc.Complete();
+                }
+                catch (Exception ex)
+                { }
+                finally
+                {
+                    sc.Dispose();
+                }
+            }
+        }
+
         public void Open(UserStoryAttachment diagramObject, string userId)
         {
             TransactionOptions _transcOptions = new TransactionOptions();
@@ -239,7 +280,7 @@ namespace Engineer.Service
                     repository.SaveToHistory(diagram, userId);
                     try
                     {
-                        SendUpdateEmail(diagram, userId);
+                        SendEmail(diagram, userId, "EditDiagram");
                     }
                     catch (Exception ex)
                     {
@@ -253,12 +294,12 @@ namespace Engineer.Service
 
         }
 
-        private void SendUpdateEmail(UserStoryAttachment diagramObject,string userId)
+        private void SendEmail(UserStoryAttachment diagramObject,string userId,string template)
         {
             MailService mailService = MailService.Instance;
             string _mailConfigFilePath = AppDomain.CurrentDomain.GetData("DataDirectory") + "\\Mail.xml";
             mailService.LoadFile(_mailConfigFilePath);
-            DTOMessage message = mailService.GetMessage("EditDiagram");
+            DTOMessage message = mailService.GetMessage(template);
             string sendFrom = (ConfigurationSettings.AppSettings["MailFromAddress"] != null) ? ConfigurationSettings.AppSettings["MailFromAddress"].ToString() : "";
             UserRepository uRepositorty = new UserRepository();
             var actionUser = uRepositorty.FindById(userId);

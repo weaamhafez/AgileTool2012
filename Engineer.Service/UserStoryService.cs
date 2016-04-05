@@ -104,6 +104,18 @@ namespace Engineer.Service
                 
         }
 
+        public List<UserStory> FindByDiagramIDAndNotShared(int attachId,string userId)
+        {
+            try
+            {
+                return uRepository.FindByDiagramIDAndNotShared(attachId,userId);
+            }
+            catch (Exception e)
+            {
+                throw new NotExistItemException(AppConstants.EXCEPTION_RETREIVE_STORY_OF_DIAGRAMS);
+            }
+        }
+
         public void OpenStory(UserStory story, string userId)
         {
             TransactionOptions _transcOptions = new TransactionOptions();

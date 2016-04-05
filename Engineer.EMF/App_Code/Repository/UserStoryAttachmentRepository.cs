@@ -19,11 +19,21 @@ namespace Engineer.EMF
 
             exist.state = diagram.state;
             db.SaveChanges();
+            diagram = exist;
         }
 
         public AttachmentHistory GetHistory(int historyId)
         {
             return db.AttachmentHistories.SingleOrDefault(w => w.Id == historyId);
+        }
+
+        public void Add(List<UserStoryAttachment> attachs)
+        {
+            if(attachs != null)
+            {
+                db.UserStoryAttachments.AddRange(attachs);
+                db.SaveChanges();
+            }
         }
     }
 }

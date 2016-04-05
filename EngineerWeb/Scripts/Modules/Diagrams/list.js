@@ -1,6 +1,83 @@
-﻿var diagramJSON;
-var userStoriesTable;
+﻿(function () {
+    'use strict';
 
+    angular
+        .module('app')
+        .controller('controller', controller);
+
+    controller.$inject = ['$scope', '$compile'];
+    function controller($scope, $compile) {
+    }
+});
+var diagramJSON;
+var userStoriesTable;
+var injected = false;
+(function () {
+    'use strict';
+    angular
+    .module('app')
+    .controller('controller', controller)
+    // directive for loading the selectpicker
+    .directive("userStories", ['$timeout', function ($timeout) {
+        return {
+            link: function ($scope, element, attrs) {
+                $scope.$on('dataloaded', function () {
+                    $timeout(function () {
+                        $("#userStories").selectpicker('refresh');
+                        $('#shareModal').modal('show');
+                    }, 0, false);
+                })
+            }
+
+        }
+    }]);
+
+
+        controller.$inject = ['$scope', '$compile', '$http'];
+        function controller($scope, $compile, $http) {
+        $scope.retrieveStoriesToShare = function ($diagram) {
+            var diagramJSON = { attachId: $($diagram).data("id") };
+            $http.post(retreiveStoriesURL, JSON.stringify(diagramJSON))
+            .success(function (result) {
+                $scope.diagram = {
+                    story: null,
+                    stories: result.d,
+                    id: $($diagram).data("id"),
+                    userStoryId: $($diagram).data("userstoryid")
+                };
+                $scope.$broadcast('dataloaded');
+            })
+            .error(function (message) {
+                errorAlert(message.responseJSON.Message);
+            })
+        }
+        $scope.shareStory = function () {
+            var data = {};
+            $("#share_div :input").serializeArray().map(function (x) {
+                if (data[x.name] != null)
+                    data[x.name] += "," + x.value;
+                else
+                    data[x.name] = x.value;
+            });
+            $http.post(shareURL, JSON.stringify({"diagram":data}))
+            .success(function (result) {
+                $('#shareModal').modal('hide');
+                formsTable.ajax.reload();
+            })
+            .error(function (message) {
+                errorAlert(message.responseJSON.Message);
+            });
+        }
+    }
+   
+})();
+function openShareDialog($diagram) {
+    var scope = angular.element(document.getElementById('controllerDiv')).scope();
+    scope.$apply(function () {
+        scope.retrieveStoriesToShare($diagram);
+    });
+};
+var diagramId = 0;
 function openRemoveDialog($project) {
     var diagramId = $($project).data("id");
 
@@ -97,7 +174,8 @@ $(document).ready(function () {
                 "data": "Attachment.name",
                 "render": function (data, type, full, meta) {
                     return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' +
-                        (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' : ' ') +
+                        (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' +
+                        '<li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openShareDialog(this)">Share</a></li>' : ' ') +
                         (full.state == "CLOSED" ? '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Open\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Open</a></li>' : '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Close\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Close</a></li>') +
                         '</ul></div>';
                 }
@@ -137,5 +215,9 @@ $(document).ready(function () {
     });
     $("#addDiagram").on("click", function (e) {
         window.location.href = "New";
+    });
+    $('#shareModal').on('hidden.bs.modal', function () {
+        $('#share_div').find("input[type=text],input[type=hidden],select,textarea").val("");
+        $('#share_div').find(".selectpicker").selectpicker('refresh');
     });
 });
