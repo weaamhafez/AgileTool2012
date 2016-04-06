@@ -35,6 +35,18 @@ namespace Engineer.Service
             #endregion
         }
 
+        public AttachmentHistory FindByHistoryID(int historyId)
+        {
+            try
+            {
+                return repository.FindByHistoryID(historyId);
+            }
+            catch (Exception ex)
+            {
+                throw new BadRequestException(AppConstants.EXCEPTION_RETREIVE_DIAGRAMS);
+            }
+        }
+
         public List<UserStoryAttachment> FindByStoryID(int Id)
         {
             try
@@ -128,6 +140,7 @@ namespace Engineer.Service
                                 activties = graph,
                                 SVG = svg,
                                 state = AppConstants.DIAGRAM_STATUS_OPEN,
+                                version = 1
                             });
                         }
                     }
@@ -194,14 +207,16 @@ namespace Engineer.Service
             {
                 try
                 {
+                    diagramObject.state = AppConstants.DIAGRAM_STATUS_OPEN;
+                    diagramObject = rep.UpdateStatus(diagramObject); 
+
                     #region lock
                     var diagrams = new List<UserStoryAttachment>();
                     diagrams.Add(diagramObject);
-                    UnLockDiagrams(diagrams);
+                    UnLockDiagrams(diagrams,userId);
                     #endregion
 
-                    diagramObject.state = AppConstants.DIAGRAM_STATUS_OPEN;
-                    rep.UpdateStatus(diagramObject);
+                    
                     sc.Complete();
 
                 }
@@ -227,7 +242,7 @@ namespace Engineer.Service
                     #region lock
                     var diagrams = new List<UserStoryAttachment>();
                     diagrams.Add(diagramObject);
-                    LockDiagrams(diagrams);
+                    LockDiagrams(diagrams,userId);
                     #endregion
 
                     diagramObject.state = AppConstants.DIAGRAM_STATUS_CLOSED;
@@ -311,30 +326,32 @@ namespace Engineer.Service
             });
         }
 
-        //public Attachment FindByID(int id)
-        //{
-        //    return repository.Get(new Attachment() { Id = id });
-        //}
 
-        public void LockDiagrams(List<UserStoryAttachment> diagrams)
+        public void LockDiagrams(List<UserStoryAttachment> diagrams,string userId)
         {
             foreach(UserStoryAttachment attach in diagrams)
             {
                 attach.@readonly = true;
-                repository.UpdateLock(attach);
-                attach.state = AppConstants.DIAGRAM_STATUS_CLOSED;
-                rep.UpdateStatus(attach);
+                if (repository.UpdateLock(attach, userId,true))
+                {
+                    attach.state = AppConstants.DIAGRAM_STATUS_CLOSED;
+                    var exist = rep.UpdateStatus(attach);
+                    repository.SaveToHistory(exist, userId);
+                }
+                else
+                    Console.WriteLine("Already locked");
             }
         }
 
-        public void UnLockDiagrams(List<UserStoryAttachment> diagrams)
+        public void UnLockDiagrams(List<UserStoryAttachment> diagrams, string userId)
         {
             foreach (UserStoryAttachment attach in diagrams)
             {
                 attach.@readonly = false;
-                repository.UpdateLock(attach);
+                repository.UpdateLock(attach,userId,false);
                 attach.state = AppConstants.DIAGRAM_STATUS_OPEN;
-                rep.UpdateStatus(attach);
+                attach.version = ++attach.version;
+                rep.UpdateStatusAndVersion(attach);
             }
         }
 

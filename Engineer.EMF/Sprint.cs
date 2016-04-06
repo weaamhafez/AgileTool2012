@@ -29,6 +29,7 @@ namespace Engineer.EMF
         public Nullable<System.DateTime> eDate { get; set; }
         public string state { get; set; }
         public Nullable<int> OriginalSprintNumber { get; set; }
+        public Nullable<int> version { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [JsonIgnore]

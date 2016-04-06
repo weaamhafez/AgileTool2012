@@ -13,13 +13,13 @@ namespace Engineer.EMF
             return db.UserStoryAttachments.SingleOrDefault(w => w.attachId == userStoryAttachment.attachId && w.userStoryId == userStoryAttachment.userStoryId);
         }
 
-        public void UpdateStatus(UserStoryAttachment diagram)
+        public UserStoryAttachment UpdateStatus(UserStoryAttachment diagram)
         {
             var exist = Get(diagram);
 
             exist.state = diagram.state;
             db.SaveChanges();
-            diagram = exist;
+            return exist;
         }
 
         public AttachmentHistory GetHistory(int historyId)
@@ -34,6 +34,15 @@ namespace Engineer.EMF
                 db.UserStoryAttachments.AddRange(attachs);
                 db.SaveChanges();
             }
+        }
+
+        public void UpdateStatusAndVersion(UserStoryAttachment diagram)
+        {
+            var exist = Get(diagram);
+
+            exist.state = diagram.state;
+            exist.version = diagram.version;
+            db.SaveChanges();
         }
     }
 }

@@ -206,6 +206,7 @@
       <DependentUpon>ASPNETDB.MDF</DependentUpon>
     </Content>
     <Content Include="App_Data\dbo.AspNetRoles.data.sql" />
+    <Content Include="App_Data\DML.sql" />
     <Content Include="App_Data\Mail.xml" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-select.css" />

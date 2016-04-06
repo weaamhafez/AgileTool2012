@@ -72,7 +72,9 @@ $(document).ready(function () {
         },
         "paging": true,
         "columns": [
-            {"data": "number"},{"data": "topic"},{"data": "state"},
+            { "data": "number" }, { "data": "topic" }, { "data": "state" }
+            //, { "data": "version" }
+            ,
             {
                 "data": "name",
                 "render": function (data, type, full, meta) {

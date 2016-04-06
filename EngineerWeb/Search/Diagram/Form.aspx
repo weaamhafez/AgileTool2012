@@ -32,21 +32,27 @@
 		</div>
 
         <div style="margin-top: 30px" class="form-group">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-20">
                     <table id="diagramsTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th style="width: 30%">
+                            <th style="width: 10%">
                                 Diagram Name
                             </th>
-                            <th style="width: 30%">
+                            <th style="width: 10%">
                                 User Story
                             </th>
-                             <%--<th style="width: 30%">
-                                Sprint
-                            </th>--%>
-                             <th style="width: 30%">
+                            <th style="width: 20%">
                                 Users
+                            </th>
+                             <th style="width: 20%">
+                                Date
+                            </th>
+                            <th style="width: 10%">
+                                Version#
+                            </th>
+                            <th style="width: 30%">
+                                Sprints
                             </th>
                         </tr>
                         </thead>
@@ -58,6 +64,6 @@
      </div>
     <script type="text/javascript">
         var searchURL = '<%=ResolveUrl("Form.aspx/Search")%>';
-         var viewURL = '<%=ResolveUrl("Diagram/View")%>';
+         var viewURL = '<%=ResolveUrl("~/Diagram/View")%>';
     </script>
 </asp:Content>

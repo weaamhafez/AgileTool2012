@@ -50,14 +50,17 @@ namespace Engineer.EMF
         {
             sprint.sDate = DateTime.Now;
             sprint.state = AppConstants.SPRINT_STATUS_OPEN;
+            sprint.version = 1;
             db.Sprints.Add(sprint);
             db.SaveChanges();
         }
 
+
         public void Update(Sprint sprint)
         {
             var exist = Get(sprint);
-
+            exist.number = sprint.number;
+            exist.UserStories = sprint.UserStories;
             exist.topic = sprint.topic;
             db.SaveChanges();
         }
@@ -81,6 +84,14 @@ namespace Engineer.EMF
 
         }
 
+        public void UpdateStateAndVersion(Sprint sprint)
+        {
+            var exist = Get(sprint);
+            exist.state = sprint.state;
+            exist.version = ++exist.version;
+            db.SaveChanges();
+        }
+
         public Sprint Get(Sprint sprint)
         {
             var exist = db.Sprints.SingleOrDefault(w => w.Id == sprint.Id);
@@ -92,9 +103,10 @@ namespace Engineer.EMF
         public void Close(Sprint sprint, string userId)
         {
             var exist = Get(sprint);
-            exist.state = "Closed";
+            exist.state = AppConstants.SPRINT_STATUS_CLOSED;
             exist.eDate = DateTime.Now;
             db.SaveChanges();
+            sprint.version = exist.version;
             SaveToHistory(sprint,userId);
         }
 
@@ -105,6 +117,7 @@ namespace Engineer.EMF
                 sprintId = sprint.Id,
                 closedBy = userId,
                 closeDate = DateTime.Now,
+                version = int.Parse(sprint.version.ToString())
             };
             db.SprintHistories.Add(history);
             db.SaveChanges();

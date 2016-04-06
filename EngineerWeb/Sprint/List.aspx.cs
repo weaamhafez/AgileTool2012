@@ -83,12 +83,7 @@ namespace EngineerWeb.Sprint
             try
             {
                 var sprintObject = Utils.ToObject<Engineer.EMF.Sprint>(sprint);
-                var diagrams = service.CloseSprint(sprintObject);
-                if(diagrams != null)
-                {
-
-                }
-
+                service.CloseSprint(sprintObject,new List().GetUserId());
             }
             catch (BadRequestException ex)
             {
@@ -107,7 +102,7 @@ namespace EngineerWeb.Sprint
             try
             {
                 var sprintObject = Utils.ToObject<Engineer.EMF.Sprint>(sprint);
-                service.OpenSprint(sprintObject);
+                service.OpenSprint(sprintObject,new List().GetUserId());
             }
             catch (BadRequestException ex)
             {

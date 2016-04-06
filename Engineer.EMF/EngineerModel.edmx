@@ -12,25 +12,6 @@
           <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="AspNetUserClaims">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ClaimType" Type="nvarchar(max)" />
-          <Property Name="ClaimValue" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogins">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
         <EntityType Name="AspNetUserRoles">
           <Key>
             <PropertyRef Name="UserId" />
@@ -92,6 +73,8 @@
           <Property Name="Date" Type="datetime" />
           <Property Name="AttachId" Type="int" />
           <Property Name="UserStoryId" Type="int" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="version" Type="int" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -117,6 +100,7 @@
           <Property Name="eDate" Type="datetime" />
           <Property Name="state" Type="varchar" MaxLength="50" />
           <Property Name="OriginalSprintNumber" Type="int" />
+          <Property Name="version" Type="int" />
         </EntityType>
         <EntityType Name="SprintHistory">
           <Key>
@@ -126,6 +110,7 @@
           <Property Name="sprintId" Type="int" />
           <Property Name="closeDate" Type="datetime" />
           <Property Name="closedBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="version" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserStories">
           <Key>
@@ -152,6 +137,7 @@
           <Property Name="state" Type="varchar" MaxLength="50" />
           <Property Name="readonly" Type="bit" />
           <Property Name="SVG" Type="nvarchar(max)" />
+          <Property Name="version" Type="int" />
         </EntityType>
         <EntityType Name="UserStoryHistory">
           <Key>
@@ -263,34 +249,6 @@
             </Principal>
             <Dependent Role="AttachmentHistory">
               <PropertyRef Name="UserStoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -444,8 +402,6 @@
         </Association>
         <EntityContainer Name="EngineerEMFModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AssignProjectUser" EntityType="Self.AssignProjectUser" Schema="dbo" store:Type="Tables" />
@@ -490,14 +446,6 @@
           <AssociationSet Name="FK_AttachmentHistory_UserStory" Association="Self.FK_AttachmentHistory_UserStory">
             <End Role="UserStories" EntitySet="UserStories" />
             <End Role="AttachmentHistory" EntitySet="AttachmentHistory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -561,27 +509,6 @@
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
-        <EntityType Name="AspNetUserClaim">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="AspNetUserLogin">
-          <Key>
-            <PropertyRef Name="LoginProvider" />
-            <PropertyRef Name="ProviderKey" />
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
-        </EntityType>
         <EntityType Name="AspNetUser">
           <Key>
             <PropertyRef Name="Id" />
@@ -598,8 +525,6 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="Attachments" Relationship="Self.FK_Attachment_Users" FromRole="AspNetUsers" ToRole="Attachment" />
           <NavigationProperty Name="AttachmentHistories" Relationship="Self.FK_AttachmentHistory_Users" FromRole="AspNetUsers" ToRole="AttachmentHistory" />
           <NavigationProperty Name="SprintHistories" Relationship="Self.FK_SprintHistory_Users" FromRole="AspNetUsers" ToRole="SprintHistory" />
@@ -632,6 +557,8 @@
           <Property Name="Date" Type="DateTime" Precision="3" />
           <Property Name="AttachId" Type="Int32" />
           <Property Name="UserStoryId" Type="Int32" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="version" Type="Int32" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_AttachmentHistory_Users" FromRole="AttachmentHistory" ToRole="AspNetUsers" />
           <NavigationProperty Name="Attachment" Relationship="Self.FK_AttachmentHistory_Attachment" FromRole="AttachmentHistory" ToRole="Attachment" />
           <NavigationProperty Name="UserStory" Relationship="Self.FK_AttachmentHistory_UserStory" FromRole="AttachmentHistory" ToRole="UserStories" />
@@ -662,6 +589,7 @@
           <Property Name="eDate" Type="DateTime" Precision="3" />
           <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="OriginalSprintNumber" Type="Int32" />
+          <Property Name="version" Type="Int32" />
           <NavigationProperty Name="SprintHistories" Relationship="Self.FK_SprintHistory_Sprint" FromRole="Sprint" ToRole="SprintHistory" />
           <NavigationProperty Name="UserStories" Relationship="Self.UserStorySprint" FromRole="Sprint" ToRole="UserStories" />
         </EntityType>
@@ -673,6 +601,7 @@
           <Property Name="sprintId" Type="Int32" />
           <Property Name="closeDate" Type="DateTime" Precision="3" />
           <Property Name="closedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="version" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_SprintHistory_Users" FromRole="SprintHistory" ToRole="AspNetUsers" />
           <NavigationProperty Name="Sprint" Relationship="Self.FK_SprintHistory_Sprint" FromRole="SprintHistory" ToRole="Sprint" />
         </EntityType>
@@ -708,6 +637,7 @@
           <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="readonly" Type="Boolean" />
           <Property Name="SVG" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="version" Type="Int32" />
           <NavigationProperty Name="Attachment" Relationship="Self.FK_UserStoryAttachment_Attachment" FromRole="UserStoryAttachment" ToRole="Attachment" />
           <NavigationProperty Name="UserStory" Relationship="Self.FK_UserStoryAttachment_UserStories" FromRole="UserStoryAttachment" ToRole="UserStories" />
         </EntityType>
@@ -722,34 +652,6 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserStoryHistory_User" FromRole="UserStoryHistory" ToRole="AspNetUsers" />
           <NavigationProperty Name="UserStory" Relationship="Self.FK_UserStoryHistory_UserStory" FromRole="UserStoryHistory" ToRole="UserStories" />
         </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogins">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Attachment_Users">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="0..1" />
           <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
@@ -912,8 +814,6 @@
         </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Attachments" EntityType="Self.Attachment" />
           <EntitySet Name="AttachmentHistories" EntityType="Self.AttachmentHistory" />
@@ -923,14 +823,6 @@
           <EntitySet Name="UserStories" EntityType="Self.UserStory" />
           <EntitySet Name="UserStoryAttachments" EntityType="Self.UserStoryAttachment" />
           <EntitySet Name="UserStoryHistories" EntityType="Self.UserStoryHistory" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
           <AssociationSet Name="FK_Attachment_Users" Association="Self.FK_Attachment_Users">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Attachment" EntitySet="Attachments" />
@@ -1010,25 +902,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUserClaim">
-              <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
-                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUserLogin">
-              <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="Engineer.EMF.Model.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
@@ -1067,6 +940,8 @@
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="AttachId" ColumnName="AttachId" />
                 <ScalarProperty Name="UserStoryId" ColumnName="UserStoryId" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="version" ColumnName="version" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1094,6 +969,7 @@
                 <ScalarProperty Name="eDate" ColumnName="eDate" />
                 <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="OriginalSprintNumber" ColumnName="OriginalSprintNumber" />
+                <ScalarProperty Name="version" ColumnName="version" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1104,6 +980,7 @@
                 <ScalarProperty Name="sprintId" ColumnName="sprintId" />
                 <ScalarProperty Name="closeDate" ColumnName="closeDate" />
                 <ScalarProperty Name="closedBy" ColumnName="closedBy" />
+                <ScalarProperty Name="version" ColumnName="version" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1131,6 +1008,7 @@
                 <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="readonly" ColumnName="readonly" />
                 <ScalarProperty Name="SVG" ColumnName="SVG" />
+                <ScalarProperty Name="version" ColumnName="version" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

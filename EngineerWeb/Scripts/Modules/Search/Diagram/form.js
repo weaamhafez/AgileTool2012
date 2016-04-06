@@ -1,5 +1,5 @@
 ﻿function openView($diagram) {
-    window.location.href = viewURL +"?id=" + $($diagram).data("id") + "&storyId=" + $($diagram).data("storyid");
+    window.location.href = viewURL + "?id=" + $($diagram).data("id") + "&storyId=" + $($diagram).data("storyid") + "&historyId=" + $($diagram).data("historyid");
 }
 $(document).ready(function () {
     var formsTable;
@@ -52,14 +52,14 @@ $(document).ready(function () {
                 {
                     "data": "DiagramName",
                     "render": function (data, type, full, meta) {
-                        return '<a href="javascript:void(0)" data-id="' + full.AttachmentId + '" data-storyid="' + full.UserStoryId + '" onclick="openView(this)">' + full.DiagramName  + '</a>';
+                        return '<a href="javascript:void(0)" data-id="' + full.AttachmentId + '" data-storyid="' + full.UserStoryId + '" data-historyid="'+ full.HistoryId + '" onclick="openView(this)">' + full.DiagramName  + '</a>';
                     }
                 },
                 { "data": "UserStoryName" },
-                //{
-                //    "data": "SprintNumber"
-                //}
-                 { "data": "Users" }
+                { "data": "Users" },
+                { "data": "Date" },
+                { "data": "Version" },
+                {"data": "SprintNumber"}
             ]
         });
         $btn.button('reset');

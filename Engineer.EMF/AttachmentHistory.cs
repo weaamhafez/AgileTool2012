@@ -20,6 +20,8 @@ namespace Engineer.EMF
         public Nullable<System.DateTime> Date { get; set; }
         public Nullable<int> AttachId { get; set; }
         public Nullable<int> UserStoryId { get; set; }
+        public string state { get; set; }
+        public Nullable<int> version { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Attachment Attachment { get; set; }

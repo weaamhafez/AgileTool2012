@@ -11,7 +11,8 @@ namespace Engineer.EMF.Utils
     {
         public bool Equals(DiagramSearchModel x, DiagramSearchModel y)
         {
-            return x.AttachmentId == y.AttachmentId && x.UserStoryId == y.UserStoryId && x.SprintId == y.SprintId;
+            return x.AttachmentId == y.AttachmentId && x.UserStoryId == y.UserStoryId && x.SprintId == y.SprintId
+                && x.HistoryId == y.HistoryId;
         }
 
         public int GetHashCode(DiagramSearchModel obj)

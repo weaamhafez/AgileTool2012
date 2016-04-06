@@ -22,6 +22,7 @@ namespace Engineer.EMF
         public string state { get; set; }
         public Nullable<bool> @readonly { get; set; }
         public string SVG { get; set; }
+        public Nullable<int> version { get; set; }
     
         public virtual Attachment Attachment { get; set; }
         public virtual UserStory UserStory { get; set; }

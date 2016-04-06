@@ -1,4 +1,5 @@
-﻿using Engineer.EMF.Models;
+﻿using Engineer.EMF.App_Code.Utils;
+using Engineer.EMF.Models;
 using Engineer.EMF.Utils;
 using Engineer.EMF.Utils.Exceptions;
 using Engineer.Model;
@@ -40,6 +41,11 @@ namespace Engineer.EMF
             return diagrams;
         }
 
+        public AttachmentHistory FindByHistoryID(int historyId)
+        {
+            return db.AttachmentHistories.SingleOrDefault(w => w.Id == historyId);
+        }
+
         public List<AttachmentHistory> FindDiagramHistory(UserStoryAttachment diagramObject)
         {
             return db.AttachmentHistories.Where(w => w.AttachId == diagramObject.attachId && w.UserStoryId == diagramObject.userStoryId).OrderBy(o=>o.Date).ToList();
@@ -69,8 +75,9 @@ namespace Engineer.EMF
             if (!string.IsNullOrEmpty(diagramName))
             {
                 attachments.Add("diagrams", db.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.Attachment.name.Contains(diagramName) &&
+                w.state == AppConstants.DIAGRAM_STATUS_CLOSED
                 // user stories or sprints is closed
-                (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED || w.UserStory.Sprints.Select(s => s.state == AppConstants.SPRINT_STATUS_CLOSED).Count() > 0)).ToList())
+                /*(w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED || w.UserStory.Sprints.Select(s => s.state == AppConstants.SPRINT_STATUS_CLOSED).Count() > 0)*/).ToList())
                 ;
 
             }
@@ -81,8 +88,8 @@ namespace Engineer.EMF
             if (stories != null && stories.Length > 0 && !stories.Contains("0"))
             {
                
-                var closedStories = db.UserStories.Where(w => w.state == AppConstants.USERSTORY_STATUS_FINISIHED
-                && stories.Contains(w.Id.ToString()));
+                var closedStories = db.UserStories.Where(w => /*w.state == AppConstants.USERSTORY_STATUS_FINISIHED
+                && */stories.Contains(w.Id.ToString()));
                 var attachmentsByStories = new List<UserStoryAttachment>();
                 closedStories.ToList().ForEach(f =>
                 {
@@ -95,7 +102,7 @@ namespace Engineer.EMF
             if (!string.IsNullOrEmpty(sprint) && sprint != "0")
             {
                 var searchBySprints = sprint.Split(',');
-                var closedSprints = db.Sprints.Where(w => w.state == AppConstants.SPRINT_STATUS_CLOSED).ToList();
+                var closedSprints = db.Sprints./*Where(w => w.state == AppConstants.SPRINT_STATUS_CLOSED).*/ToList();
                 var attachmentBySprint = new List<UserStoryAttachment>();
                 foreach (var closedSprint in closedSprints)
                 {
@@ -115,30 +122,48 @@ namespace Engineer.EMF
             //get by users
             if (users != null && users.Length > 0)
             {
-                var attachmentsByUsers = db.UserStoryAttachments.Where(w => (w.UserStory.state == AppConstants.USERSTORY_STATUS_FINISIHED)
+                var attachmentsByUsers = db.UserStoryAttachments.Where(w => (w.state == AppConstants.DIAGRAM_STATUS_CLOSED)
                 && w.UserStory.AspNetUsers.Where(t => users.Contains(t.Id)).Count() > 0);
                 attachments.Add("users", attachmentsByUsers.ToList());
             }
 
             // check if any of results not returned value, then empty result
             if (attachments.Values.Where(w => w.Count() == 0).Count() > 0) return new List<DiagramSearchModel>();
-            attachments.Values.ToList().ForEach(f =>
+            else
             {
-                f.ToList().ForEach(d =>
+                List<UserStoryAttachment> sharedStories = new List<UserStoryAttachment>();
+                attachments.Values.ToList().ForEach(result =>
                 {
-                    diagrams.Add(new DiagramSearchModel()
-                    {
-                        AttachmentId = d.attachId,
-                        DiagramName = d.Attachment.name,
-                        //SprintId = string.Join(",", us.Sprints),
-                        //SprintNumber = Convert.ToString(s.number),
-                        UserStoryName = d.UserStory.name,
-                        UserStoryId = d.UserStory.Id,
-                        Users = string.Join(",", d.UserStory.AspNetUsers.Select(user => user.UserName))
-                    });
+                    if (sharedStories.Count() == 0)
+                        sharedStories = result;
+                    else
+                        sharedStories = sharedStories.Intersect(result, new SearchComparer()).ToList(); 
                 });
+                sharedStories.ToList().ForEach(d =>
+                {
+                    int sprintNumber = !string.IsNullOrEmpty(sprint) && sprint != "0" ? int.Parse(sprint) : 0;
+                    var closedHistory = d.Attachment.AttachmentHistories.Where(w => w.UserStoryId == d.userStoryId && d.attachId == w.AttachId && w.state == AppConstants.DIAGRAM_STATUS_CLOSED).ToList();
+                    closedHistory.ForEach(history =>
+                    {
+                        diagrams.Add(new DiagramSearchModel()
+                        {
+                            HistoryId = history.Id,
+                            AttachmentId = d.attachId,
+                            DiagramName = d.Attachment.name,
+                            SprintNumber = !string.IsNullOrEmpty(sprint) && sprint != "0" ? Convert.ToString(db.Sprints.SingleOrDefault(s => s.Id == sprintNumber).number) :
+                         (d.UserStory.Sprints != null ? String.Join(",", d.UserStory.Sprints.Select(s => s.number)) : ""),
+                            UserStoryName = d.UserStory.name,
+                            UserStoryId = d.UserStory.Id,
+                            Users = db.AspNetUsers.SingleOrDefault(w=>w.Id == history.AspNetUser.Id).UserName,
+                            Date = Convert.ToDateTime(history.Date),
+                            Version = Convert.ToInt32(history.version)
+                        });
+                    });
+                    
+                });
+            }
+               
                 
-            });
             diagrams = diagrams.Where(w => w.UserStoryId > 0 ).Distinct(new AttachUSAndSprintComparer()).ToList();
             return diagrams;
             
@@ -186,21 +211,26 @@ namespace Engineer.EMF
            ).Where(locked => locked.@readonly == null || locked.@readonly == false).ToList();
         }
 
-        public void UpdateLock(UserStoryAttachment diagram)
+        public bool UpdateLock(UserStoryAttachment diagram,string userId,bool lockFlag)
         {
             try
             {
+                if (diagram.state == AppConstants.DIAGRAM_STATUS_CLOSED && lockFlag)
+                    return false;
+
                 UserStoryAttachmentRepository rep = new UserStoryAttachmentRepository();
                 var exist = rep.Get(diagram);
                 if (exist.state != AppConstants.DIAGRAM_STATUS_FINISIHED)
                 {
                     exist.@readonly = diagram.@readonly;
                     db.SaveChanges();
+                    return true;
                 }
+                return false;
             }
             catch (NotExistItemException ex)
             {
-                Console.WriteLine(ex.ErrorMessage);
+                throw new BadRequestException(ex.Message);
             }
         }
 
@@ -225,7 +255,9 @@ namespace Engineer.EMF
                 UserId = userId,
                 Date = DateTime.Now,
                 AttachId = diagram.attachId,
-                UserStoryId = diagram.userStoryId
+                UserStoryId = diagram.userStoryId,
+                state = diagram.state,
+                version = diagram.version
             };
             db.AttachmentHistories.Add(history);
             db.SaveChanges();

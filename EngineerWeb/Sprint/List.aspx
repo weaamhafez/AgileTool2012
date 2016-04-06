@@ -11,12 +11,15 @@
                             <th style="width: 10%">
                                 Number
                             </th>
-                            <th style="width: 30%">
+                            <th style="width: 20%">
                                 Topic
                             </th>
                              <th style="width: 20%">
                                 State
                             </th>
+                            <%--<th style="width: 20%">
+                                Version
+                            </th>--%>
                              <th style="width: 30%">
                                 Action
                             </th>

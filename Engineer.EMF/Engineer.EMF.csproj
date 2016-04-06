@@ -72,18 +72,13 @@
     <Compile Include="App_Code\Utils\AttachmentAndUserStoryComparer.cs" />
     <Compile Include="App_Code\Utils\AttachmentComparer.cs" />
     <Compile Include="App_Code\Utils\AttachUSAndSprintComparer.cs" />
+    <Compile Include="App_Code\Utils\SearchComparer.cs" />
     <Compile Include="App_Code\Utils\UserComparer.cs" />
     <Compile Include="App_Code\Utils\UserStoryComparer.cs" />
     <Compile Include="AspNetRole.cs">
       <DependentUpon>EngineerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="AspNetUser.cs">
-      <DependentUpon>EngineerModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserClaim.cs">
-      <DependentUpon>EngineerModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AspNetUserLogin.cs">
       <DependentUpon>EngineerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Attachment.cs">

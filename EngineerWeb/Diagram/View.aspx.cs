@@ -20,7 +20,17 @@ namespace EngineerWeb.Diagram
                 if (!cs.IsStartupScriptRegistered("viewImage"))
                     cs.RegisterStartupScript(this.GetType(), "viewImage",
                         "<script type=\"text/javascript\" src=\"" + ResolveClientUrl("~/Scripts/Modules/Diagrams/view.js") + "\" ></script>", false);
-                if (!string.IsNullOrEmpty(Request.Params["id"]))
+
+
+                // open the attach history in search menu
+                if (!string.IsNullOrEmpty(Request.Params["historyId"]))
+                {
+                    var diagram = service.FindByHistoryID(int.Parse(Request.Params["historyId"]));
+                    Response.Write(diagram.Graph);
+                    Response.Flush();
+                }
+                // open original in history menu
+                else if (!string.IsNullOrEmpty(Request.Params["id"]) && !string.IsNullOrEmpty(Request.Params["storyId"]))
                 {
                     var diagram = service.FindByIDAndUserStory(int.Parse(Request.Params["id"]),int.Parse(Request.Params["storyId"]));
                     Response.Write(diagram.SVG);

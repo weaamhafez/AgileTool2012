@@ -30,7 +30,7 @@ namespace Engineer.Service
                     #region lock diagrams
                     DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
                     var diagrams = dService.FindByUserStory(story.Id);
-                    dService.LockDiagrams(diagrams);
+                    dService.LockDiagrams(diagrams,userId);
                     #endregion
 
 
@@ -133,7 +133,7 @@ namespace Engineer.Service
                     #region lock diagrams
                     DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
                     var diagrams = dService.FindByUserStory(story.Id);
-                    dService.UnLockDiagrams(diagrams);
+                    dService.UnLockDiagrams(diagrams,userId);
                     #endregion
                     sc.Complete();
                 }

@@ -16,7 +16,7 @@ namespace Engineer.Service
         {
             return uRepository.ListAll();
         }
-        public List<UserStoryAttachment> CloseSprint(Sprint sprint)
+        public List<UserStoryAttachment> CloseSprint(Sprint sprint,string userId)
         {
             var diagrams = new List<UserStoryAttachment>();
             TransactionOptions _transcOptions = new TransactionOptions();
@@ -25,12 +25,11 @@ namespace Engineer.Service
             {
                 try
                 {
-                    sprint.state = AppConstants.SPRINT_STATUS_CLOSED;
-                    uRepository.UpdateState(sprint);
+                    uRepository.Close(sprint,userId);
                     #region lock diagrams
                     DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
                     diagrams = dService.FindBySprint(sprint.Id);
-                    dService.LockDiagrams(diagrams);
+                    dService.LockDiagrams(diagrams,userId);
                     #endregion
                     sc.Complete();
                 }
@@ -47,7 +46,7 @@ namespace Engineer.Service
             return diagrams;
         }
 
-        public void OpenSprint(Sprint sprint)
+        public void OpenSprint(Sprint sprint,string userId)
         {
             sprint.state = AppConstants.SPRINT_STATUS_OPEN;
             TransactionOptions _transcOptions = new TransactionOptions();
@@ -56,11 +55,11 @@ namespace Engineer.Service
             {
                 try
                 {
-                    uRepository.UpdateState(sprint);
+                    uRepository.UpdateStateAndVersion(sprint);
                     #region unlock diagrams
                     DiagramService dService = (DiagramService)new ServiceLocator<Attachment>().locate();
                     var diagrams = dService.FindBySprint(sprint.Id);
-                    dService.UnLockDiagrams(diagrams);
+                    dService.UnLockDiagrams(diagrams,userId);
                     #endregion
                     sc.Complete();
                 }

@@ -18,6 +18,7 @@ namespace Engineer.EMF
         public Nullable<int> sprintId { get; set; }
         public Nullable<System.DateTime> closeDate { get; set; }
         public string closedBy { get; set; }
+        public int version { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Sprint Sprint { get; set; }
