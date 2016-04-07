@@ -123,13 +123,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="aspnet-EngineerWeb-20160302104213.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="aspnet-EngineerWeb-20160302104213_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>aspnet-EngineerWeb-20160302104213.mdf</DependentUpon>
-    </Content>
     <Content Include="EngineerModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EngineerModel.edmx</DependentUpon>
