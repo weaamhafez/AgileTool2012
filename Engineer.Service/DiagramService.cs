@@ -186,6 +186,7 @@ namespace Engineer.Service
                         attach.SVG = attachment.SVG;
                         attach.update_by = userId;
                         attach.update_date = DateTime.Now;
+                        attach.version = attachment.version;
                     });
                     rep.Add(diagramObject.UserStoryAttachments.ToList());
                     sc.Complete();

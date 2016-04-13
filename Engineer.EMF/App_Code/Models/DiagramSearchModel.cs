@@ -18,5 +18,6 @@ namespace Engineer.EMF.Models
         public int HistoryId { set; get; }
         public DateTime Date {set;get;}
         public int Version { set; get; }
+        public string CreatedBy { set; get; }
     }
 }

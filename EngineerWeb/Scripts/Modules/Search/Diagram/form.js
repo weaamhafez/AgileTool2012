@@ -57,6 +57,7 @@ $(document).ready(function () {
                 },
                 { "data": "UserStoryName" },
                 { "data": "Users" },
+                {"data":"CreatedBy"},
                 { "data": "Date" },
                 { "data": "Version" },
                 {"data": "SprintNumber"}

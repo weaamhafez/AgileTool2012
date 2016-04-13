@@ -156,7 +156,8 @@ namespace Engineer.EMF
                             UserStoryId = d.UserStory.Id,
                             Users = db.AspNetUsers.SingleOrDefault(w=>w.Id == history.AspNetUser.Id).UserName,
                             Date = Convert.ToDateTime(history.Date),
-                            Version = Convert.ToInt32(history.version)
+                            Version = Convert.ToInt32(history.version),
+                            CreatedBy = d.Attachment.AspNetUser.UserName
                         });
                     });
                     

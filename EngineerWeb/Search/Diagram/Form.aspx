@@ -45,6 +45,9 @@
                             <th style="width: 20%">
                                 Users
                             </th>
+                            <th style="width: 10%">
+                                Creator
+                            </th>
                              <th style="width: 20%">
                                 Date
                             </th>
