@@ -323,7 +323,15 @@ namespace Engineer.Service
             {
                 string messageSubject = MailService.formatMsg(message.Subject, new string[] { diagramObject.Attachment.name.ToString() });
                 string bodyStr = MailService.formatMsg(message.Body, new string[] { diagramObject.Attachment.name.ToString(), f.UserName, actionUser.UserName,diagramObject.UserStory.name });
-                MailService.SendMessageWithAttachment(sendFrom, f.Email, null, messageSubject, bodyStr, null);
+                try
+                {
+                    MailService.SendMessageWithAttachment(sendFrom, f.Email, null, messageSubject, bodyStr, null);
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine(ex.Message);
+                }
             });
         }
 

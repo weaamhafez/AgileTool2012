@@ -141,10 +141,10 @@ namespace Engineer.Service
             // Add credentials
             var section = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
             client.UseDefaultCredentials = section.Network.DefaultCredentials;
-            //client.Host = section.Network.Host;
-            //client.Credentials = new System.Net.NetworkCredential(section.Network.UserName, section.Network.Password);
+            client.Host = section.Network.Host;
+            client.Credentials = new System.Net.NetworkCredential(section.Network.UserName, section.Network.Password);
             //client.EnableSsl = section.Network.EnableSsl;
-            //client.Port = section.Network.Port;
+            client.Port = section.Network.Port;
 
             // send message
             client.Send(message);
