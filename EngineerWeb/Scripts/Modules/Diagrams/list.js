@@ -173,11 +173,10 @@ $(document).ready(function () {
             {
                 "data": "Attachment.name",
                 "render": function (data, type, full, meta) {
-                    return ' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' +
-                        (!full.readonly ? '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' +
-                        '<li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openShareDialog(this)">Share</a></li>' : ' ') +
-                        (full.state == "CLOSED" ? '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Open\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Open</a></li>' : '<li><a href="javascript:void(0)" onclick="diagramAction(this,\'Close\')" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" >Close</a></li>') +
-                        '</ul></div>';
+                    var result = (!full.readonly ? (' <div class="btn-group"><a href="#" class="btn btn-info" >Action</a><a href="#" class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a><ul class="dropdown-menu">' + '<li><a href="javascript:void(0)" onclick="window.location.href = \'New?id=' + full.attachId + '&userStoryId=' + full.userStoryId + '\'" >Update</a></li><li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openRemoveDialog(this)">Delete</a></li>' +
+                    '<li><a href="javascript:void(0)" data-id="' + full.attachId + '" data-userStoryId="' + full.userStoryId + '" onclick="openShareDialog(this)">Share</a></li>' + '</ul></div>') : '<div class="btn-group"></div>');
+                    return result;
+                        
                 }
             }
         ]

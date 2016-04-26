@@ -85,7 +85,7 @@ function removeObject($project,action) {
                 success: function (msg) {
                     successAlert("Success", "Request Success");
                     formsTable.ajax.reload();
-                    $btn.button('reset');
+                    
                     return false;
                 },
                 error: function (message) {
