@@ -112,7 +112,7 @@ namespace Engineer.EMF
                         {
                             attachmentBySprint.AddRange(f.UserStoryAttachments.Where(
                             w =>
-                            w.state != AppConstants.DIAGRAM_STATUS_FINISIHED).ToList());
+                            w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.state == AppConstants.DIAGRAM_STATUS_CLOSED).ToList());
                         }
                     });
                 }
