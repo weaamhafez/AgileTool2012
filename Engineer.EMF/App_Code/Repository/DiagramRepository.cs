@@ -93,7 +93,7 @@ namespace Engineer.EMF
                 var attachmentsByStories = new List<UserStoryAttachment>();
                 closedStories.ToList().ForEach(f =>
                 {
-                    attachmentsByStories.AddRange(f.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED));
+                    attachmentsByStories.AddRange(f.UserStoryAttachments.Where(w => w.state != AppConstants.DIAGRAM_STATUS_FINISIHED && w.state == AppConstants.DIAGRAM_STATUS_CLOSED));
                 });
                 attachments.Add("stories", attachmentsByStories);
             }
